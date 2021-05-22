@@ -43,4 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     // app intro package
     implementation 'com.github.AppIntro:AppIntro:6.1.0'
+    implementation 'com.facebook.fresco:fresco:0.14.1'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
