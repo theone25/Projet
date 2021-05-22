@@ -81,6 +81,7 @@
         android:textSize="17dp"
         android:textStyle="bold"
         app:cornerRadius="15dp"
+        style="@style/Widget.MaterialComponents.Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
