@@ -15,9 +15,16 @@ import com.github.appintro.indicator.IndicatorController;
 import org.jetbrains.annotations.Nullable;
 
 public class IntroApp extends AppIntro {
+    appPref appp ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appp = new appPref(this);
+        if (appp.isFirstTimeLaunch()==false) {
+            Intent i =new Intent(this,LoginActivity.class);
+            startActivity(i);
+            this.finish();
+        }
         // full screen activity
         setImmersiveMode();
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -62,7 +69,9 @@ public class IntroApp extends AppIntro {
         super.onSkipPressed(currentFragment);
         // Decide what to do when the user clicks on "Skip", for now it is finish
         //finish();
-        Intent i =new Intent(this,Main2Activity.class);
+        appp.setFirstTimeLaunch(false);
+        //startActivity(new Intent(WelcomeActivity.this, Login_account.class));
+        Intent i =new Intent(this,LoginActivity.class);
         startActivity(i);
         this.finish();
     }
@@ -72,8 +81,8 @@ public class IntroApp extends AppIntro {
         super.onDonePressed(currentFragment);
         // Decide what to do when the user clicks on "Done", for now it is finish
         //finish();
-
-        Intent i =new Intent(this, Main2Activity.class);
+        appp.setFirstTimeLaunch(false);
+        Intent i =new Intent(this, LoginActivity.class);
         startActivity(i);
         this.finish();
     }
