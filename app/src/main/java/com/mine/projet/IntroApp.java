@@ -62,9 +62,9 @@ public class IntroApp extends AppIntro {
         super.onSkipPressed(currentFragment);
         // Decide what to do when the user clicks on "Skip", for now it is finish
         //finish();
-        /*Intent i =new Intent(this,loginActivity.class);
+        Intent i =new Intent(this,Main2Activity.class);
         startActivity(i);
-        this.finish();*/
+        this.finish();
     }
 
     @Override
@@ -73,8 +73,8 @@ public class IntroApp extends AppIntro {
         // Decide what to do when the user clicks on "Done", for now it is finish
         //finish();
 
-        /*Intent i =new Intent(this, loginActivity.class);
+        Intent i =new Intent(this, Main2Activity.class);
         startActivity(i);
-        this.finish();*/
+        this.finish();
     }
 }
