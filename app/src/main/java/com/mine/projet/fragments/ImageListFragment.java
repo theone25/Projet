@@ -85,7 +85,7 @@ public class ImageListFragment  extends Fragment {
                 mView = view;
                 mImageView = (SimpleDraweeView) view.findViewById(R.id.image1);
                 mLayoutItem = (LinearLayout) view.findViewById(R.id.layout_item);
-                mImageViewWishlist = (ImageView) view.findViewById(R.id.ic_wishlist);
+                mImageViewWishlist = (ImageView) view.findViewById(R.id.ic_fav);
             }
         }
 
