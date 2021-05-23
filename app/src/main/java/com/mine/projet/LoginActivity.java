@@ -72,6 +72,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick (View v){
                 //postDataUsingVolley(user.getText().toString(),pass.getText().toString());
                 login(user.getText().toString(),pass.getText().toString());
+                imgUtils.getProducts1(getApplicationContext());
+                imgUtils.getProducts2(getApplicationContext());
+                imgUtils.getProducts3(getApplicationContext());
+                imgUtils.getProducts4(getApplicationContext());
+                imgUtils.getProducts5(getApplicationContext());
+                imgUtils.getProducts6(getApplicationContext());
             }
         });
 

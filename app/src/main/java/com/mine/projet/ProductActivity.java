@@ -11,11 +11,12 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mine.projet.fragments.ImageListFragment;
+import com.mine.projet.models.Produit;
 
 public class ProductActivity extends AppCompatActivity {
 
     int imagePosition;
-    String stringImageUri;
+    Produit stringImageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,14 +24,20 @@ public class ProductActivity extends AppCompatActivity {
         SimpleDraweeView mImageView = (SimpleDraweeView)findViewById(R.id.image1);
         TextView textViewAddToCart = (TextView)findViewById(R.id.text_action_bottom1);
         TextView textViewBuyNow = (TextView)findViewById(R.id.text_action_bottom2);
+        TextView tvprodnom = (TextView)findViewById(R.id.tvprodnom);
+        TextView tvprodprix = (TextView)findViewById(R.id.tvprodprix);
+        TextView tvproddetails = (TextView)findViewById(R.id.tvproddetails);
 
         //Getting image uri from previous screen
         if (getIntent() != null) {
-            stringImageUri = getIntent().getStringExtra(ImageListFragment.STRING_IMAGE_URI);
-            imagePosition = getIntent().getIntExtra(ImageListFragment.STRING_IMAGE_URI,0);
+            stringImageUri =(Produit) getIntent().getSerializableExtra(ImageListFragment.STRING_IMAGE_URI);
+            imagePosition = getIntent().getIntExtra(ImageListFragment.STRING_IMAGE_POSITION,0);
         }
-        Uri uri = Uri.parse(stringImageUri);
+        Uri uri = Uri.parse(stringImageUri.image);
         mImageView.setImageURI(uri);
+        tvprodnom.setText(stringImageUri.nom);
+        tvprodprix.setText(stringImageUri.prix+" MAD");
+        tvproddetails.setText(stringImageUri.details);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +52,7 @@ public class ProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 imgUtils imageUrlUtils = new imgUtils();
-                imageUrlUtils.addCartListImageUri(stringImageUri);
+                imageUrlUtils.addCartListProduit(stringImageUri);
                 Toast.makeText(ProductActivity.this,"Ajouté au panier.",Toast.LENGTH_SHORT).show();
                 Main2Activity.notificationCountCart++;
                 // apres
@@ -57,7 +64,7 @@ public class ProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 imgUtils imageUrlUtils = new imgUtils();
-                imageUrlUtils.addCartListImageUri(stringImageUri);
+                imageUrlUtils.addCartListProduit(stringImageUri);
                 Main2Activity.notificationCountCart++;
 
                 // ajouter apres

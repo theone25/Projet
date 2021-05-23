@@ -33,12 +33,14 @@
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Jean"
+                    android:id="@+id/tvprodnom"
                     android:textSize="16dp"
                     android:textColor="@color/gen_black"/>
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="120 MAD"
+                    android:id="@+id/tvprodprix"
                     android:textSize="20dp"
                     android:textColor="@color/gen_black"
                     />
@@ -186,22 +188,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="\u2022 simple"
+                    android:id="@+id/tvproddetails"
                     android:textSize="12dp"
                     android:textColor="@color/gen_black"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="\u2022 Cotton"
-                    android:textSize="12dp"
-                    android:textColor="@color/gen_black"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="\u2022 imprimé"
-                    android:textSize="12dp"
-                    android:textColor="@color/gen_black"/>
+
 
             </LinearLayout>
         </LinearLayout>

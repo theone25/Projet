@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mine.projet.models.Produit;
 
 import java.util.ArrayList;
 
@@ -26,14 +27,21 @@ import static com.mine.projet.fragments.ImageListFragment.STRING_IMAGE_URI;
 public class PanierActivity extends AppCompatActivity {
     public static TextView panierCOUT;
     private static Context mContext;
+    public static float prix;
+    public static TextView  textaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_panier);
         mContext = PanierActivity.this;
-        panierCOUT=findViewById(R.id.text_action_bottom1);
         imgUtils imageUrlUtils = new imgUtils();
-        ArrayList<String> cartlistImageUri =imageUrlUtils.getCartListImageUri();
+        textaction = (TextView) findViewById(R.id.text_action_bottom1);
+        ArrayList<Produit> cartlistImageUri =imageUrlUtils.getCartListProduit();
+        prix=0;
+        for(Produit p : cartlistImageUri){
+            prix=prix+Float.parseFloat(p.prix);
+        }
         //Show cart layout based on items
         setCartLayout();
 
@@ -47,13 +55,15 @@ public class PanierActivity extends AppCompatActivity {
     public static class SimpleStringRecyclerViewAdapter
             extends RecyclerView.Adapter<PanierActivity.SimpleStringRecyclerViewAdapter.ViewHolder> {
 
-        private ArrayList<String> mCartlistImageUri;
+        private ArrayList<Produit> mCartlistImageUri;
         private RecyclerView mRecyclerView;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final SimpleDraweeView mImageView;
             public final LinearLayout mLayoutItem, mLayoutRemove , mLayoutEdit;
+            public TextView tvprix,tvnom,tvdetails;
+
 
             public ViewHolder(View view) {
                 super(view);
@@ -62,10 +72,14 @@ public class PanierActivity extends AppCompatActivity {
                 mLayoutItem = (LinearLayout) view.findViewById(R.id.layout_item_desc);
                 mLayoutRemove = (LinearLayout) view.findViewById(R.id.layout_action1);
                 mLayoutEdit = (LinearLayout) view.findViewById(R.id.layout_action2);
+
+                tvprix=(TextView) mLayoutItem.findViewById(R.id.panprix);
+                tvdetails=(TextView) mLayoutItem.findViewById(R.id.pandetails);
+                tvnom=(TextView) mLayoutItem.findViewById(R.id.pannom);
             }
         }
 
-        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView, ArrayList<String> wishlistImageUri) {
+        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView, ArrayList<Produit> wishlistImageUri) {
             mCartlistImageUri = wishlistImageUri;
             mRecyclerView = recyclerView;
         }
@@ -90,8 +104,12 @@ public class PanierActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final PanierActivity.SimpleStringRecyclerViewAdapter.ViewHolder holder, final int position) {
 
-            final Uri uri = Uri.parse(mCartlistImageUri.get(position));
+            final Uri uri = Uri.parse(mCartlistImageUri.get(position).image);
             holder.mImageView.setImageURI(uri);
+            holder.tvnom.setText(mCartlistImageUri.get(position).nom);
+            holder.tvprix.setText(mCartlistImageUri.get(position).prix+" MAD");
+            textaction.setText(String.valueOf(PanierActivity.prix)+" MAD");
+            holder.tvdetails.setText(mCartlistImageUri.get(position).details);
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -107,9 +125,11 @@ public class PanierActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     imgUtils imageUrlUtils = new imgUtils();
-                    imageUrlUtils.removeCartListImageUri(position);
+                    imageUrlUtils.removeCartListProduit(position);
                     notifyDataSetChanged();
-                    panierCOUT.setText("0 DH");
+                    PanierActivity.prix=PanierActivity.prix-imageUrlUtils.getCartListProduitPrix(position);
+                    textaction.setText(PanierActivity.prix+" MAD");
+                    //panierCOUT.setText("0 DH");
                     //Decrease notification count
                     Main2Activity.notificationCountCart--;
 

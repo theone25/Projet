@@ -23,21 +23,24 @@
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Denim Shirt"
+                android:id="@+id/pannom"
                 android:textSize="@dimen/text_size_small"
                 android:textStyle="bold"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Slim fit, cotton"
+                android:id="@+id/pandetails"
                 android:textSize="@dimen/text_size_small"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rs. 8,999"
+                android:id="@+id/panprix"
                 android:textSize="@dimen/text_size_xmedium"
                 android:textColor="#4CAF50"
                 android:layout_marginTop="@dimen/margin_small"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delivery charge: FREE"
+                android:text="Livraison: Gratuite"
                 android:textSize="@dimen/text_size_small"/>
             <LinearLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,7 +52,7 @@
                     android:textSize="@dimen/text_size_small"/>
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Size: 41"
+                    android:text=""
                     android:textSize="@dimen/text_size_small"
                     android:layout_marginLeft="@dimen/margin_medium"/>
             </LinearLayout>
