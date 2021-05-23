@@ -38,6 +38,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation 'androidx.viewpager:viewpager:1.0.0'
+    implementation files('C:\\Users\\moham\\Desktop\\mysql-connector-java-5.1.40-bin')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -45,4 +46,7 @@ dependencies {
     implementation 'com.github.AppIntro:AppIntro:6.1.0'
     implementation 'com.facebook.fresco:fresco:0.14.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.android.volley:volley:1.2.0'
+
+
 }

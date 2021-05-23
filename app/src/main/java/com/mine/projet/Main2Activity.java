@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.mine.projet.fragments.ImageListFragment;
+import com.mine.projet.fragments.NotificationCountSetClass;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -42,6 +44,10 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent intent = getIntent();
+        int id=intent.getIntExtra("id",0);
+        String name=intent.getStringExtra("name");
+        String email = intent.getStringExtra("email");
         //setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -60,8 +66,10 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             setupViewPager(viewPager);
             tabLayout.setupWithViewPager(viewPager);
         }
-
-
+        View headerView = navigationView.getHeaderView(0);
+        TextView tv = (TextView) headerView.findViewById(R.id.usernameDrawer);
+        System.out.println(name);
+        tv.setText(name);
     }
 
     @Override
@@ -81,42 +89,32 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main2, menu);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // Get the notifications MenuItem and
-        // its LayerDrawable (layer-list)
         MenuItem item = menu.findItem(R.id.action_cart);
-        //NotificationCountSetClass.setAddToCart(Main2Activity.this, item,notificationCountCart);
-        // force the ActionBar to relayout its MenuItems.
-        // onCreateOptionsMenu(Menu) will be called again.
+        NotificationCountSetClass.setAddToCart(Main2Activity.this, item,notificationCountCart);
+
         invalidateOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             //startActivity(new Intent(Main2Activity.this, SearchResultActivity.class));
             return true;
         }else if (id == R.id.action_cart) {
 
-           /* NotificationCountSetClass.setAddToCart(Main2Activity.this, item, notificationCount);
-            invalidateOptionsMenu();*/
-            //startActivity(new Intent(Main2Activity.this, CartListActivity.class));
+            startActivity(new Intent(Main2Activity.this, PanierActivity.class));
 
-           /* notificationCount=0;//clear notification count
-            invalidateOptionsMenu();*/
             return true;
         }else {
             //startActivity(new Intent(Main2Activity.this, EmptyActivity.class));
@@ -160,10 +158,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         viewPager.setAdapter(adapter);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_item1) {
@@ -181,7 +177,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         }else if (id == R.id.my_wishlist) {
             //startActivity(new Intent(Main2Activity.this, WishlistActivity.class));
         }else if (id == R.id.my_cart) {
-            //startActivity(new Intent(Main2Activity.this, CartListActivity.class));
+            startActivity(new Intent(Main2Activity.this, PanierActivity.class));
         }else if(id == R.id.my_orders){
             //startActivity(new Intent(Main2Activity.this, MyOrderActivity.class));
         }else if(id == R.id.my_account){

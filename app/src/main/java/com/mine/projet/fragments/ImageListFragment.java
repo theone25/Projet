@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import com.mine.projet.Main2Activity;
+import com.mine.projet.ProductActivity;
 import com.mine.projet.R;
 import com.mine.projet.imgUtils;
 
@@ -39,16 +40,6 @@ public class ImageListFragment  extends Fragment {
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {
-      /*  if (ImageListFragment.this.getArguments().getInt("type") == 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        } else if (ImageListFragment.this.getArguments().getInt("type") == 2) {
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
-        } else {
-            GridLayoutManager layoutManager = new GridLayoutManager(recyclerView.getContext(), 3);
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
-        }*/
         String[] items=null;
         if (ImageListFragment.this.getArguments().getInt("type") == 1){
             items = imgUtils.getOffersUrls();
@@ -107,29 +98,22 @@ public class ImageListFragment  extends Fragment {
             }
             if (holder.mImageView.getTopLevelDrawable() != null) {
                 holder.mImageView.getTopLevelDrawable().setCallback(null);
-//                ((BitmapDrawable) holder.mImageView.getTopLevelDrawable()).getBitmap().recycle();
+//
             }
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-           /* FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) holder.mImageView.getLayoutParams();
-            if (mRecyclerView.getLayoutManager() instanceof GridLayoutManager) {
-                layoutParams.height = 200;
-            } else if (mRecyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {
-                layoutParams.height = 600;
-            } else {
-                layoutParams.height = 800;
-            }*/
+
             final Uri uri = Uri.parse(mValues[position]);
             holder.mImageView.setImageURI(uri);
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*Intent intent = new Intent(mActivity, ItemDetailsActivity.class);
+                    Intent intent = new Intent(mActivity, ProductActivity.class);
                     intent.putExtra(STRING_IMAGE_URI, mValues[position]);
                     intent.putExtra(STRING_IMAGE_POSITION, position);
-                    mActivity.startActivity(intent);*/
+                    mActivity.startActivity(intent);
 
                 }
             });

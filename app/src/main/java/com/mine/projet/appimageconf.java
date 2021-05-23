@@ -23,9 +23,6 @@ public class appimageconf {
     public static final int MAX_DISK_CACHE_SIZE = 300 * ByteConstants.MB;
     public static final int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 3;
 
-    /**
-     * Creates config using android http stack as network backend.
-     */
     public static ImagePipelineConfig getImagePipelineConfig(Context context) {
         if (sImagePipelineConfig == null) {
             ImagePipelineConfig.Builder configBuilder = ImagePipelineConfig.newBuilder(context);
@@ -35,23 +32,7 @@ public class appimageconf {
         return sImagePipelineConfig;
     }
 
-    /**
-     * Creates config using OkHttp as network backed.
-     */
-/*  public static ImagePipelineConfig getOkHttpImagePipelineConfig(Context context) {
-    if (sOkHttpImagePipelineConfig == null) {
-      OkHttpClient okHttpClient = new OkHttpClient();
-      ImagePipelineConfig.Builder configBuilder =
-        OkHttpImagePipelineConfigFactory.newBuilder(context, okHttpClient);
-      configureCaches(configBuilder, context);
-      sOkHttpImagePipelineConfig = configBuilder.build();
-    }
-    return sOkHttpImagePipelineConfig;
-  }*/
 
-    /**
-     * Configures disk and memory cache not to exceed common limits
-     */
     private static void configureCaches(ImagePipelineConfig.Builder configBuilder, Context context) {
         final MemoryCacheParams bitmapCacheParams = new MemoryCacheParams(
                 MAX_MEMORY_CACHE_SIZE, // Max total size of elements in the cache
