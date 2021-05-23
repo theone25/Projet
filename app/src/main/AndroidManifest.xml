@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Projet">
-        <activity android:name=".FavorisActivity"></activity>
+        <activity android:name=".EmptyActivity"></activity>
+        <activity android:name=".FavorisActivity" />
         <activity android:name=".PanierActivity" />
         <activity android:name=".ProductActivity" />
         <activity android:name=".RegisterActivity" />

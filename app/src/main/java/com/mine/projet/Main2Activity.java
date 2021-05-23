@@ -175,7 +175,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         }else if (id == R.id.nav_item6) {
             viewPager.setCurrentItem(5);
         }else if (id == R.id.my_wishlist) {
-            //startActivity(new Intent(Main2Activity.this, WishlistActivity.class));
+            startActivity(new Intent(Main2Activity.this, FavorisActivity.class));
         }else if (id == R.id.my_cart) {
             startActivity(new Intent(Main2Activity.this, PanierActivity.class));
         }else if(id == R.id.my_orders){
@@ -184,7 +184,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             //startActivity(new Intent(Main2Activity.this, AccountActivity.class));
         }
         else {
-            //startActivity(new Intent(Main2Activity.this, EmptyActivity.class));
+            startActivity(new Intent(Main2Activity.this, EmptyActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
