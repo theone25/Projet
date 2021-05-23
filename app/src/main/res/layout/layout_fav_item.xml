@@ -26,14 +26,17 @@
                 android:layout_height="wrap_content"
                 android:text="Denim Shirt"
                 android:textSize="10dp"
+                android:id="@+id/favnom"
                 android:textStyle="bold"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Slim fit, cotton"
+                android:id="@+id/favdetails"
                 android:textSize="10dp"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="120 MAD"
+                android:id="@+id/favprix"
                 android:textSize="12dp"
                 android:textColor="#4CAF50"/>
         </LinearLayout>
