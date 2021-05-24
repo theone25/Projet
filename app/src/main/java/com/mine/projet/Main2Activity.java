@@ -117,7 +117,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
 
             return true;
         }else {
-            //startActivity(new Intent(Main2Activity.this, EmptyActivity.class));
+            startActivity(new Intent(Main2Activity.this, EmptyActivity.class));
 
         }
         return super.onOptionsItemSelected(item);
