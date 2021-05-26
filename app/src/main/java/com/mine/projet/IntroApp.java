@@ -46,7 +46,14 @@ public class IntroApp extends AppIntro {
             System.out.println(userName);
             System.out.println(userPass);
             if(userID != -1 && userName!="" && userPass!=""){
+                imgUtils.getProducts1(getApplicationContext());
+                imgUtils.getProducts2(getApplicationContext());
+                imgUtils.getProducts3(getApplicationContext());
+                imgUtils.getProducts4(getApplicationContext());
+                imgUtils.getProducts5(getApplicationContext());
+                imgUtils.getProducts6(getApplicationContext());
                 login(userName,userPass);
+
             }
             else{
                 Intent i =new Intent(this,LoginActivity.class);
@@ -142,12 +149,6 @@ public class IntroApp extends AppIntro {
                                 log.putExtra("name",name);
                                 log.putExtra("email",email);
                                 startActivity(log);
-                                imgUtils.getProducts1(getApplicationContext());
-                                imgUtils.getProducts2(getApplicationContext());
-                                imgUtils.getProducts3(getApplicationContext());
-                                imgUtils.getProducts4(getApplicationContext());
-                                imgUtils.getProducts5(getApplicationContext());
-                                imgUtils.getProducts6(getApplicationContext());
                                 finish();
                             }
                         } catch (JSONException e) {
