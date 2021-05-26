@@ -107,14 +107,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
-        if (id == R.id.action_search) {
-            //startActivity(new Intent(Main2Activity.this, SearchResultActivity.class));
-            return true;
-        }else if (id == R.id.action_cart) {
-
+        if (id == R.id.action_cart) {
             startActivity(new Intent(Main2Activity.this, PanierActivity.class));
-
             return true;
         }else {
             startActivity(new Intent(Main2Activity.this, EmptyActivity.class));

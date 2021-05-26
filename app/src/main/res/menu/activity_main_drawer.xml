@@ -45,10 +45,6 @@
                 android:icon="@drawable/ic_favorite_black_24dp"
                 android:title="@string/my_wishlist" />
             <item
-                android:id="@+id/my_rewards"
-                android:icon="@drawable/ic_card_giftcard_black_24dp"
-                android:title="@string/my_rewards" />
-            <item
                 android:id="@+id/my_account"
                 android:icon="@drawable/ic_person_black_24dp"
                 android:title="@string/my_account" />
@@ -61,9 +57,6 @@
                 android:id="@+id/contact_us"
                 android:title="@string/contact_us" />
 
-            <item
-                android:id="@+id/help_center"
-                android:title="@string/help_center" />
         </menu>
     </item>
 </menu>
