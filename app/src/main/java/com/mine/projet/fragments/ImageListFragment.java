@@ -140,10 +140,9 @@ public class ImageListFragment  extends Fragment {
                 @Override
                 public void onClick(View view) {
                     imgUtils images = new imgUtils();
-                    images.addWishlistProduit(mValues.get(position));
+                    images.addWishlistProduit(mValues.get(position),mActivity.getApplicationContext());
                     holder.mImageViewWishlist.setImageResource(R.drawable.ic_favorite_black_18dp);
                     notifyDataSetChanged();
-                    // ajouter un produit au favoris
 
                     Toast.makeText(mActivity,"Produit Ajouté.",Toast.LENGTH_SHORT).show();
 

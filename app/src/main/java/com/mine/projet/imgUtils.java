@@ -239,8 +239,9 @@ public class imgUtils {
 
 
     // Methods for Wishlist
-    public void addWishlistProduit(Produit wishlistImageUri) {
-        this.wishlistImageUri.add(0,wishlistImageUri);
+    public void addWishlistProduit(Produit wishlistImageUri,Context ctx) {
+        ajouterFavoris(wishlistImageUri.id,ctx);
+
     }
 
     public void removeWishlistProduit(int position) {
@@ -261,11 +262,12 @@ public class imgUtils {
     public ArrayList<Produit> getCartListProduit(){ return this.cartListImageUri; }
 
     public Float getCartListProduitPrix(int pos){ return Float.parseFloat(this.cartListImageUri.get(pos).prix); }
-    public void login(String reqemail, String reqpass){
-        Intent log =new Intent(this, Main2Activity.class);
-        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+    public void ajouterFavoris(int prodID,Context ctx){
+        appPref appp = new appPref(ctx);
+        int userID=appp.pref.getInt("id",-1);
+        RequestQueue queue = Volley.newRequestQueue(ctx);
         StringRequest strreq = new StringRequest(Request.Method.POST,
-                "https://fptandroid.000webhostapp.com/",
+                "https://fptandroid.000webhostapp.com/favoris.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String Response) {
@@ -277,13 +279,7 @@ public class imgUtils {
 
                             for(int i=0; i < json.length(); i++) {
                                 JSONObject respObj = json.getJSONObject(i);
-                                String name = respObj.getString("name");
-                                int id = respObj.getInt("id");
-                                String password = respObj.getString("password");
-                                String email = respObj.getString("email");
-                                log.putExtra("id",id);
-                                log.putExtra("name",name);
-                                log.putExtra("email",email);
+                                wishlistImageUri=Produit.fromJson(json);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -297,8 +293,8 @@ public class imgUtils {
         }){@Override
         public Map<String, String> getParams(){
             Map<String, String> params = new HashMap<>();
-            params.put("email", reqemail);
-            params.put("password", reqpass);
+            params.put("user", String.valueOf(userID));
+            params.put("produit", String.valueOf(prodID));
             return params;
         }
         };
