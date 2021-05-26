@@ -143,6 +143,8 @@ public class ImageListFragment  extends Fragment {
                     images.addWishlistProduit(mValues.get(position));
                     holder.mImageViewWishlist.setImageResource(R.drawable.ic_favorite_black_18dp);
                     notifyDataSetChanged();
+                    // ajouter un produit au favoris
+
                     Toast.makeText(mActivity,"Produit Ajouté.",Toast.LENGTH_SHORT).show();
 
                 }

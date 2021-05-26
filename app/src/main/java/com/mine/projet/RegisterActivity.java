@@ -3,6 +3,7 @@ package com.mine.projet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,15 +15,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mine.projet.db.database;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private EditText password_conf;
-    String a,b,c,d,e;
     private Button registerButton;
-    database db;
+    public static final String MY_PREFS = "SharedPreferences";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,38 +49,13 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(nom.getText().length()>0 && prenom.getText().length()>0 && email.getText().length()>0 && password.getText().length()>0 && password_conf.getText().length()>0){
                     if(password.getText()==password_conf.getText()){
-                        try {
-                            register(email.getText().toString(),password.getText().toString(),nom.getText()+" "+prenom.getText(),"");
-                        } catch (SQLException | ClassNotFoundException throwables) {
-                            throwables.printStackTrace();
-                        }
+                        register(nom.getText()+" "+prenom.getText(),email.getText().toString(),password.getText().toString());
                     }
                 }
             }
         });
 
 
-    }
-
-    private void register(String email,String pass,String name, String phone) throws SQLException, ClassNotFoundException {
-        db=new database();
-        Connection con=db.getExtraConnection();
-        String sql="'INSERT INTO Users (id,email,password,name,) VALUES (?,?,?,?)";
-        PreparedStatement statement = con.prepareStatement(sql);
-        statement.setString(1, "");
-        statement.setString(2, email);
-        statement.setString(3, pass);
-        statement.setString(4, name);
-
-        int rowsInserted = statement.executeUpdate();
-        if (rowsInserted > 0) {
-            System.out.println("A new user was inserted successfully!");
-            // to do, go to main page
-            Intent i =new Intent(this, Main2Activity.class);
-            startActivity(i);
-            this.finish();
-        }
-        con.close();
     }
 
     public void register(String reqname,String reqemail, String reqpass){
@@ -111,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 log.putExtra("name",name);
                                 log.putExtra("email",email);
                                 startActivity(log);
+                                saveLoggedInUId(id,email,password);
                                 finish();
                             }
                         } catch (JSONException e) {
@@ -132,6 +104,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
         };
         queue.add(strreq);
+    }
+    private void saveLoggedInUId(int id, String username, String password) {
+        SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
+        SharedPreferences.Editor myEditor = settings.edit();
+        myEditor.putInt("uid", id);
+        myEditor.putString("username", username);
+        myEditor.putString("password", password);
+        myEditor.commit();
     }
 
 }

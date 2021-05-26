@@ -43,12 +43,10 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String MY_PREFS = "SharedPreferences";
-    private dbAdapter dba;
     private EditText user;
     private EditText pass;
     private Button loginButton;
     TextView tv;
-    database db;
 
     private RequestQueue mRequestQueue;
     private StringRequest mStringRequest;
@@ -101,10 +99,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void saveLoggedInUId(long id, String username, String password) {
+    private void saveLoggedInUId(int id, String username, String password) {
         SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
         SharedPreferences.Editor myEditor = settings.edit();
-        myEditor.putLong("uid", id);
+        myEditor.putInt("uid", id);
         myEditor.putString("username", username);
         myEditor.putString("password", password);
         myEditor.commit();
@@ -208,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                                 log.putExtra("name",name);
                                 log.putExtra("email",email);
                                 startActivity(log);
+                                saveLoggedInUId(id,email,password);
                                 finish();
                             }
                         } catch (JSONException e) {
