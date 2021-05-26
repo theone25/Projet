@@ -125,6 +125,7 @@ public class PanierActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     imgUtils imageUrlUtils = new imgUtils();
+                    System.out.println(position);
                     imageUrlUtils.removeCartListProduit(position);
                     notifyDataSetChanged();
                     PanierActivity.prix=PanierActivity.prix-imageUrlUtils.getCartListProduitPrix(position);
