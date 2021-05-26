@@ -12,13 +12,13 @@ public class appPref {
     int PRIVATE_MODE = 0;
 
     // Shared preferences constants
-    private static final String PREF_NAME = "MyPreference";
+    private static final String PREF_NAME = "SharedPreferences";
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
 
 
     public appPref(Context context) {
         this._context = context;
-        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        pref = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 
@@ -29,5 +29,9 @@ public class appPref {
 
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    }
+    public SharedPreferences getPref(){
+        SharedPreferences prefs = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs;
     }
 }

@@ -143,7 +143,7 @@ public class ImageListFragment  extends Fragment {
                 @Override
                 public void onClick(View view) {
                     imgUtils images = new imgUtils();
-                    images.addWishlistProduit(holder.idP);
+                    images.addWishlistProduit(holder.idP, mActivity.getApplicationContext());
                     holder.mImageViewWishlist.setImageResource(R.drawable.ic_favorite_black_18dp);
                     notifyDataSetChanged();
 

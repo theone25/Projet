@@ -1,6 +1,8 @@
 package com.mine.projet;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -28,15 +30,18 @@ import java.util.Map;
 
 public class IntroApp extends AppIntro {
     appPref appp ;
+    public static Context ctx ;
     public static final String MY_PREFS = "SharedPreferences";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ctx=IntroApp.this;
         appp = new appPref(this);
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         if (appp.isFirstTimeLaunch()==false) {
-            int userID=appp.pref.getInt("id",-1);
-            String userName=appp.pref.getString("username","");
-            String userPass=appp.pref.getString("password","");
+            int userID=prefs.getInt("id",-1);
+            String userName=prefs.getString("username","");
+            String userPass=prefs.getString("password","");
             System.out.println(userID);
             System.out.println(userName);
             System.out.println(userPass);

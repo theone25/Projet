@@ -2,6 +2,7 @@ package com.mine.projet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -239,8 +240,8 @@ public class imgUtils {
 
 
     // Methods for Wishlist
-    public void addWishlistProduit(int idp) {
-        ajouterFavoris(idp);
+    public void addWishlistProduit(int idp, Context ctx) {
+        ajouterFavoris(idp,ctx);
 
     }
 
@@ -264,10 +265,13 @@ public class imgUtils {
     public Float getCartListProduitPrix(int pos){ return Float.parseFloat(this.cartListImageUri.get(pos).prix); }
 
     // favoris methodes
-    public void ajouterFavoris(int prodID){
-        appPref appp = new appPref(FavorisActivity.mContext);
-        int userID=appp.pref.getInt("id",-1);
-        RequestQueue queue = Volley.newRequestQueue(FavorisActivity.mContext);
+    public void ajouterFavoris(int prodID, Context ctx){
+        appPref appp = new appPref(IntroApp.ctx);
+        SharedPreferences prefs = ctx.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
+        int userID=prefs.getInt("id",-1);
+        System.out.println("--->" + userID);
+        System.out.println("---->"+prodID);
+        RequestQueue queue = Volley.newRequestQueue(ctx);
         StringRequest strreq = new StringRequest(Request.Method.POST,
                 "https://fptandroid.000webhostapp.com/favoris.php",
                 new Response.Listener<String>() {
@@ -278,11 +282,7 @@ public class imgUtils {
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
                             System.out.println(json);
-
-                            for(int i=0; i < json.length(); i++) {
-                                JSONObject respObj = json.getJSONObject(i);
-                                wishlistImageUri=Produit.fromJson(json);
-                            }
+                            wishlistImageUri=Produit.fromJson(json);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
