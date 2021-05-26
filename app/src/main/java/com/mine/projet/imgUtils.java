@@ -239,8 +239,8 @@ public class imgUtils {
 
 
     // Methods for Wishlist
-    public void addWishlistProduit(Produit wishlistImageUri,Context ctx) {
-        ajouterFavoris(wishlistImageUri.id,ctx);
+    public void addWishlistProduit(int idp) {
+        ajouterFavoris(idp);
 
     }
 
@@ -262,7 +262,47 @@ public class imgUtils {
     public ArrayList<Produit> getCartListProduit(){ return this.cartListImageUri; }
 
     public Float getCartListProduitPrix(int pos){ return Float.parseFloat(this.cartListImageUri.get(pos).prix); }
-    public void ajouterFavoris(int prodID,Context ctx){
+
+    // favoris methodes
+    public void ajouterFavoris(int prodID){
+        appPref appp = new appPref(FavorisActivity.mContext);
+        int userID=appp.pref.getInt("id",-1);
+        RequestQueue queue = Volley.newRequestQueue(FavorisActivity.mContext);
+        StringRequest strreq = new StringRequest(Request.Method.POST,
+                "https://fptandroid.000webhostapp.com/favoris.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            // on below line we are passing our response
+                            // to json object to extract data from it.
+                            JSONArray json = new JSONArray(Response);
+                            System.out.println(json);
+
+                            for(int i=0; i < json.length(); i++) {
+                                JSONObject respObj = json.getJSONObject(i);
+                                wishlistImageUri=Produit.fromJson(json);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+            }
+        }){@Override
+        public Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
+            params.put("user", String.valueOf(userID));
+            params.put("produit", String.valueOf(prodID));
+            return params;
+        }
+        };
+        queue.add(strreq);
+    }
+    public void supprimerFavoris(int prodID,Context ctx){
         appPref appp = new appPref(ctx);
         int userID=appp.pref.getInt("id",-1);
         RequestQueue queue = Volley.newRequestQueue(ctx);

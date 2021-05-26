@@ -37,6 +37,9 @@ public class IntroApp extends AppIntro {
             int userID=appp.pref.getInt("id",-1);
             String userName=appp.pref.getString("username","");
             String userPass=appp.pref.getString("password","");
+            System.out.println(userID);
+            System.out.println(userName);
+            System.out.println(userPass);
             if(userID != -1 && userName!="" && userPass!=""){
                 login(userName,userPass);
             }

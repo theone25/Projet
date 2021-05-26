@@ -24,7 +24,7 @@ import static com.mine.projet.fragments.ImageListFragment.STRING_IMAGE_POSITION;
 import static com.mine.projet.fragments.ImageListFragment.STRING_IMAGE_URI;
 
 public class FavorisActivity extends AppCompatActivity {
-    private static Context mContext;
+    public static Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

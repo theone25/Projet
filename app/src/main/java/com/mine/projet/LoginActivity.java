@@ -102,10 +102,10 @@ public class LoginActivity extends AppCompatActivity {
     private void saveLoggedInUId(int id, String username, String password) {
         SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
         SharedPreferences.Editor myEditor = settings.edit();
-        myEditor.putInt("uid", id);
+        myEditor.putInt("id", id);
         myEditor.putString("username", username);
         myEditor.putString("password", password);
-        myEditor.commit();
+        myEditor.apply();
     }
 
 

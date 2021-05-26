@@ -81,6 +81,7 @@ public class ImageListFragment  extends Fragment {
             public final TextView tvnom;
             public final TextView tvdetails;
             public final TextView tvprix;
+            public int idP;
 
             public ViewHolder(View view) {
                 super(view);
@@ -91,6 +92,7 @@ public class ImageListFragment  extends Fragment {
                 tvnom= (TextView) view.findViewById(R.id.tvname);
                 tvdetails= (TextView) view.findViewById(R.id.tvdetails);
                 tvprix= (TextView) view.findViewById(R.id.tvprix);
+                idP=0;
             }
         }
 
@@ -124,6 +126,7 @@ public class ImageListFragment  extends Fragment {
             holder.tvnom.setText(mValues.get(position).nom);
             holder.tvdetails.setText(mValues.get(position).details);
             holder.tvprix.setText(mValues.get(position).prix+ "  MAD" );
+            holder.idP=mValues.get(position).id;
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -140,7 +143,7 @@ public class ImageListFragment  extends Fragment {
                 @Override
                 public void onClick(View view) {
                     imgUtils images = new imgUtils();
-                    images.addWishlistProduit(mValues.get(position),mActivity.getApplicationContext());
+                    images.addWishlistProduit(holder.idP);
                     holder.mImageViewWishlist.setImageResource(R.drawable.ic_favorite_black_18dp);
                     notifyDataSetChanged();
 
