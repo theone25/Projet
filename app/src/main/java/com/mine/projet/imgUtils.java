@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 public class imgUtils {
-    static ArrayList<Produit> wishlistImageUri = new ArrayList<>();
-    static ArrayList<Produit> cartListImageUri = new ArrayList<>();
+    static ArrayList<Produit> listFavProds = new ArrayList<Produit>();
+    static ArrayList<Produit> listPanierProds = new ArrayList<Produit>();
     public static ArrayList<Produit> prod1;
     public static ArrayList<Produit> prod2;
     public static ArrayList<Produit> prod3;
@@ -246,31 +246,29 @@ public class imgUtils {
     }
 
     public void removeWishlistProduit(int position) {
-        this.wishlistImageUri.remove(position);
+        this.listFavProds.remove(position);
     }
 
-    public ArrayList<Produit> getWishlistProduit(){ return this.wishlistImageUri; }
+    public ArrayList<Produit> getWishlistProduit(){ return this.listFavProds; }
 
     // Methods for Cart
     public void addCartListProduit(Produit wishlistImageUri) {
-        this.cartListImageUri.add(0,wishlistImageUri);
+        this.listPanierProds.add(0,wishlistImageUri);
     }
 
     public void removeCartListProduit(int position) {
-        this.cartListImageUri.remove(position);
+        this.listPanierProds.remove(position);
     }
 
-    public ArrayList<Produit> getCartListProduit(){ return this.cartListImageUri; }
+    public ArrayList<Produit> getCartListProduit(){ return this.listPanierProds; }
 
-    public Float getCartListProduitPrix(int pos){ return Float.parseFloat(this.cartListImageUri.get(pos).prix); }
+    public Float getCartListProduitPrix(int pos){ return Float.parseFloat(this.listPanierProds.get(pos).prix); }
 
     // favoris methodes
     public void ajouterFavoris(int prodID, Context ctx){
         appPref appp = new appPref(IntroApp.ctx);
         SharedPreferences prefs = ctx.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
         int userID=prefs.getInt("id",-1);
-        System.out.println("--->" + userID);
-        System.out.println("---->"+prodID);
         RequestQueue queue = Volley.newRequestQueue(ctx);
         StringRequest strreq = new StringRequest(Request.Method.POST,
                 "https://fptandroid.000webhostapp.com/favoris.php",
@@ -282,7 +280,7 @@ public class imgUtils {
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
                             System.out.println(json);
-                            wishlistImageUri=Produit.fromJson(json);
+                            listFavProds=Produit.fromJson(json);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -319,7 +317,7 @@ public class imgUtils {
 
                             for(int i=0; i < json.length(); i++) {
                                 JSONObject respObj = json.getJSONObject(i);
-                                wishlistImageUri=Produit.fromJson(json);
+                                listFavProds=Produit.fromJson(json);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

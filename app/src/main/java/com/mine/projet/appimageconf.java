@@ -16,7 +16,6 @@ public class appimageconf {
     private static final String IMAGE_PIPELINE_CACHE_DIR = "imagepipeline_cache";
 
     private static ImagePipelineConfig sImagePipelineConfig;
-//    private static ImagePipelineConfig sOkHttpImagePipelineConfig;
 
     private static final int MAX_HEAP_SIZE = (int) Runtime.getRuntime().maxMemory();
 
@@ -35,11 +34,11 @@ public class appimageconf {
 
     private static void configureCaches(ImagePipelineConfig.Builder configBuilder, Context context) {
         final MemoryCacheParams bitmapCacheParams = new MemoryCacheParams(
-                MAX_MEMORY_CACHE_SIZE, // Max total size of elements in the cache
-                Integer.MAX_VALUE,                     // Max entries in the cache
-                MAX_MEMORY_CACHE_SIZE, // Max total size of elements in eviction queue
-                Integer.MAX_VALUE,                     // Max length of eviction queue
-                Integer.MAX_VALUE);                    // Max cache entry size
+                MAX_MEMORY_CACHE_SIZE,
+                Integer.MAX_VALUE,
+                MAX_MEMORY_CACHE_SIZE,
+                Integer.MAX_VALUE,
+                Integer.MAX_VALUE);    
         configBuilder
                 .setBitmapMemoryCacheParamsSupplier(
                         new Supplier<MemoryCacheParams>() {
@@ -58,7 +57,6 @@ public class appimageconf {
         if (hasExternalCacheDir())
             return context.getExternalCacheDir();
 
-        // Before Froyo we need to construct the external cache dir ourselves
         final String cacheDir = "/Android/data/" + context.getPackageName() + "/cache/";
         return createFile(Environment.getExternalStorageDirectory().getPath() + cacheDir, "");
     }

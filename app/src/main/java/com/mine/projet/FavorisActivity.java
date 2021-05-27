@@ -32,18 +32,18 @@ public class FavorisActivity extends AppCompatActivity {
         mContext = FavorisActivity.this;
 
         imgUtils imageUrlUtils = new imgUtils();
-        ArrayList<Produit> wishlistImageUri =imageUrlUtils.getWishlistProduit();
+        ArrayList<Produit> favliste =imageUrlUtils.getWishlistProduit();
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
 
         recyclerView.setLayoutManager(recylerViewLayoutManager);
-        recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(recyclerView, wishlistImageUri));
+        recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(recyclerView, favliste));
     }
     public static class SimpleStringRecyclerViewAdapter
             extends RecyclerView.Adapter<FavorisActivity.SimpleStringRecyclerViewAdapter.ViewHolder> {
 
-        private ArrayList<Produit> mWishlistImageUri;
-        private RecyclerView mRecyclerView;
+        private ArrayList<Produit> mfavliste;
+        private RecyclerView monRecyclerView;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
@@ -64,9 +64,9 @@ public class FavorisActivity extends AppCompatActivity {
             }
         }
 
-        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView, ArrayList<Produit> wishlistImageUri) {
-            mWishlistImageUri = wishlistImageUri;
-            mRecyclerView = recyclerView;
+        public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView, ArrayList<Produit> nfavliste) {
+            mfavliste = nfavliste;
+            monRecyclerView = recyclerView;
         }
 
         @Override
@@ -88,16 +88,16 @@ public class FavorisActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final FavorisActivity.SimpleStringRecyclerViewAdapter.ViewHolder holder, final int position) {
-            final Uri uri = Uri.parse(mWishlistImageUri.get(position).image);
+            final Uri uri = Uri.parse(mfavliste.get(position).image);
             holder.mImageView.setImageURI(uri);
-            holder.tvnom.setText(mWishlistImageUri.get(position).nom);
-            holder.tvprix.setText(mWishlistImageUri.get(position).prix+" MAD");
-            holder.tvdetails.setText(mWishlistImageUri.get(position).details);
+            holder.tvnom.setText(mfavliste.get(position).nom);
+            holder.tvprix.setText(mfavliste.get(position).prix+" MAD");
+            holder.tvdetails.setText(mfavliste.get(position).details);
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ProductActivity.class);
-                    intent.putExtra(STRING_IMAGE_URI,mWishlistImageUri.get(position));
+                    intent.putExtra(STRING_IMAGE_URI,mfavliste.get(position));
                     intent.putExtra(STRING_IMAGE_POSITION, position);
                     mContext.startActivity(intent);
                 }
@@ -116,7 +116,7 @@ public class FavorisActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mWishlistImageUri.size();
+            return mfavliste.size();
         }
     }
 }
