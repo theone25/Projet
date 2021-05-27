@@ -113,6 +113,7 @@ public class PanierActivity extends AppCompatActivity {
             holder.tvnom.setText(maPanierProd.get(position).nom);
             holder.tvprix.setText(maPanierProd.get(position).prix+" MAD");
             textaction.setText(String.valueOf(PanierActivity.prix)+" MAD");
+            holder.np_channel_nr.setValue(1);
             holder.tvdetails.setText(maPanierProd.get(position).details);
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -130,6 +131,7 @@ public class PanierActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     imgUtils imageUrlUtils = new imgUtils();
                     System.out.println(position);
+
                     imageUrlUtils.removeCartListProduit(position);
                     notifyDataSetChanged();
                     PanierActivity.prix=PanierActivity.prix-imageUrlUtils.getCartListProduitPrix(position);
