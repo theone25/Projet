@@ -175,7 +175,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         }else if(id == R.id.my_orders){
             startActivity(new Intent(Main2Activity.this, CommandeActivity.class));
         }else if(id == R.id.my_account){
-            //startActivity(new Intent(Main2Activity.this, AccountActivity.class));
+            startActivity(new Intent(Main2Activity.this, CompteActivity.class));
         }
         else {
             startActivity(new Intent(Main2Activity.this, EmptyActivity.class));

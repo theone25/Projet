@@ -99,12 +99,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    private void saveLoggedInUId(int id, String username, String password) {
+    private void saveLoggedInUId(int id, String username, String password,String name) {
         SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
         SharedPreferences.Editor myEditor = settings.edit();
         myEditor.putInt("id", id);
         myEditor.putString("username", username);
         myEditor.putString("password", password);
+        myEditor.putString("name", name);
         myEditor.apply();
     }
 
@@ -206,7 +207,7 @@ public class LoginActivity extends AppCompatActivity {
                                 log.putExtra("name",name);
                                 log.putExtra("email",email);
                                 startActivity(log);
-                                saveLoggedInUId(id,email,password);
+                                saveLoggedInUId(id,email,password,name);
                                 finish();
                             }
                         } catch (JSONException e) {

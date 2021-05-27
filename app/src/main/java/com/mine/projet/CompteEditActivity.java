@@ -23,46 +23,73 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
-
-    private EditText nom;
-    private EditText prenom;
-    private EditText email;
-    private EditText tel;
-    private EditText password;
-    private EditText password_conf;
-    private Button registerButton;
+public class CompteEditActivity extends AppCompatActivity {
+    EditText etnom;
+    EditText etprenom;
+    EditText etemail;
+    EditText profile_old_password;
+    EditText profile_new_password;
+    Button save_profile;
+    Button cancel_btn;
+    appPref appp;
     public static final String MY_PREFS = "SharedPreferences";
+
+    final int PROFILE_EDIT = 1;
+    public String userPass;
+    public String email;
+    public String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setContentView(R.layout.activity_compte_edit);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        nom = findViewById(R.id.et_nom);
-        prenom = findViewById(R.id.et_prenom);
-        email = findViewById(R.id.editTextTextEmailAddress);
-        password = findViewById(R.id.editTextTextPassword);
-        password_conf = findViewById(R.id.et_password_conf);
-        tel = findViewById(R.id.et_phone);
+        etnom = findViewById(R.id.nom);
+        etprenom = findViewById(R.id.prenom);
+        etemail = findViewById(R.id.email);
+        save_profile = findViewById(R.id.save_btn);
+        cancel_btn = findViewById(R.id.cancel_btn);
+        profile_old_password = findViewById(R.id.password);
+        profile_new_password = findViewById(R.id.password_new);
 
-        registerButton = findViewById(R.id.registerbutton);
+        appp = new appPref(this);
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        int userID = prefs.getInt("id", -1);
+         email = prefs.getString("username", "");
+        userPass = prefs.getString("password", "");
+         name = prefs.getString("name", "");
+        etnom.setText(name);
+        etprenom.setText(name);
+        etemail.setText(email);
 
-        registerButton.setOnClickListener(v -> {
-            if (nom.getText().length() > 0 && prenom.getText().length() > 0 && email.getText().length() > 0 && password.getText().length() > 0 && password_conf.getText().length() > 0 && tel.getText().length()>0) {
-                if (password.getText().toString().equals(password_conf.getText().toString()) ) {
-                    register(prenom.getText().toString().trim() , nom.getText().toString().trim(), email.getText().toString().trim(), password.getText().toString(),tel.getText().toString().trim());
-                }
+        save_profile.setOnClickListener(v -> {
+            if (!profile_new_password.getText().toString().trim().isEmpty() &&
+                    profile_old_password.getText().toString().equals(userPass)) {
+                userPass = profile_new_password.getText().toString();
             }
+            email = etemail.getText().toString().trim().isEmpty()? email:etemail.getText().toString();
+            name = etnom.getText().toString().trim().isEmpty()? name:etnom.getText().toString();
+
+
+            saveProfile(String.valueOf(userID), name,email, userPass);
+            Intent i =new Intent();
+            i.putExtra("username",email);
+            i.putExtra("name",name);
+
+            setResult(PROFILE_EDIT,i);
+            finish();
         });
-
-
+        cancel_btn.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
     }
 
-    public void register(String reqfirst_name,String reqlast_name, String reqemail, String reqpass,String reqphone) {
+    public void saveProfile(String id, String reqname, String reqemail, String reqpass) {
         Intent log = new Intent(this, Main2Activity.class);
-        RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(CompteEditActivity.this);
         StringRequest strreq = new StringRequest(Request.Method.POST,
-                "https://fptandroid.000webhostapp.com/register.php",
+                "https://fptandroid.000webhostapp.com/updateUser.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String Response) {
@@ -74,22 +101,14 @@ public class RegisterActivity extends AppCompatActivity {
 
                             for (int i = 0; i < json.length(); i++) {
                                 JSONObject respObj = json.getJSONObject(i);
-                                String first_name = respObj.getString("first_name");
-                                String last_name = respObj.getString("last_name");
-                                String phone = respObj.getString("phone");
-
+                                String name = respObj.getString("name");
                                 int id = respObj.getInt("id");
                                 String password = respObj.getString("password");
                                 String email = respObj.getString("email");
                                 log.putExtra("id", id);
-                                log.putExtra("first_name", first_name);
-                                log.putExtra("last_name", last_name);
-                                log.putExtra("phone", phone);
-
+                                log.putExtra("name", name);
                                 log.putExtra("email", email);
-                                startActivity(log);
                                 saveLoggedInUId(id, email, password);
-                                finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -105,10 +124,9 @@ public class RegisterActivity extends AppCompatActivity {
             public Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", reqemail);
-                params.put("first_name", reqfirst_name);
-                params.put("last_name", reqlast_name);
-                params.put("phone", reqphone);
+                params.put("name", reqname);
                 params.put("password", reqpass);
+                params.put("id", id);
                 return params;
             }
         };
