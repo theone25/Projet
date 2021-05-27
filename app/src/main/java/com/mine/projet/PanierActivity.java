@@ -102,7 +102,6 @@ public class PanierActivity extends AppCompatActivity {
             }
             if (holder.mImageView.getTopLevelDrawable() != null) {
                 holder.mImageView.getTopLevelDrawable().setCallback(null);
-//                ((BitmapDrawable) holder.mImageView.getTopLevelDrawable()).getBitmap().recycle();
             }
         }
 
@@ -125,7 +124,7 @@ public class PanierActivity extends AppCompatActivity {
                 }
             });
 
-            //Set click action
+            //supp click
             holder.mLayoutRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -143,7 +142,7 @@ public class PanierActivity extends AppCompatActivity {
                 }
             });
 
-            //Set click action
+            //edition click
             holder.mLayoutEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
