@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mine.projet.customwidgets.HorizontalNumberPicker;
 import com.mine.projet.models.Produit;
 
 import java.util.ArrayList;
@@ -63,7 +64,8 @@ public class PanierActivity extends AppCompatActivity {
             public final SimpleDraweeView mImageView;
             public final LinearLayout mLayoutItem, mLayoutRemove , mLayoutEdit;
             public TextView tvprix,tvnom,tvdetails;
-
+            public LinearLayout pickerlinlay;
+            public HorizontalNumberPicker np_channel_nr;
 
             public ViewHolder(View view) {
                 super(view);
@@ -76,6 +78,9 @@ public class PanierActivity extends AppCompatActivity {
                 tvprix=(TextView) mLayoutItem.findViewById(R.id.panprix);
                 tvdetails=(TextView) mLayoutItem.findViewById(R.id.pandetails);
                 tvnom=(TextView) mLayoutItem.findViewById(R.id.pannom);
+                pickerlinlay=(LinearLayout) mLayoutItem.findViewById(R.id.pickerlinearlayout);
+                np_channel_nr = pickerlinlay.findViewById(R.id.np_channel_nr);
+
             }
         }
 
@@ -103,7 +108,6 @@ public class PanierActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final PanierActivity.SimpleStringRecyclerViewAdapter.ViewHolder holder, final int position) {
-
             final Uri uri = Uri.parse(maPanierProd.get(position).image);
             holder.mImageView.setImageURI(uri);
             holder.tvnom.setText(maPanierProd.get(position).nom);

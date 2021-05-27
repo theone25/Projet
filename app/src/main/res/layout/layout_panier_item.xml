@@ -33,7 +33,7 @@
                 android:textSize="@dimen/text_size_small"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rs. 8,999"
+                android:text="prix"
                 android:id="@+id/panprix"
                 android:textSize="@dimen/text_size_xmedium"
                 android:textColor="#4CAF50"
@@ -44,17 +44,17 @@
                 android:textSize="@dimen/text_size_small"/>
             <LinearLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/pickerlinearlayout"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/margin_medium">
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Qty: 1"
                     android:textSize="@dimen/text_size_small"/>
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="@dimen/text_size_small"
-                    android:layout_marginLeft="@dimen/margin_medium"/>
+                <com.mine.projet.customwidgets.HorizontalNumberPicker
+                    android:id="@+id/np_channel_nr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
