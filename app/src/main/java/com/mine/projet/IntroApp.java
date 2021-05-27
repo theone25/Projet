@@ -44,15 +44,17 @@ public class IntroApp extends AppIntro {
             Gson gson = new Gson();
             String json = prefs.getString("user", "");
             User user = gson.fromJson(json, User.class);
-            if(user.id != -1 && user.email!="" && user.password!=""){
-                imgUtils.getProducts1(getApplicationContext());
-                imgUtils.getProducts2(getApplicationContext());
-                imgUtils.getProducts3(getApplicationContext());
-                imgUtils.getProducts4(getApplicationContext());
-                imgUtils.getProducts5(getApplicationContext());
-                imgUtils.getProducts6(getApplicationContext());
-                login(user.email,user.password);
+            if(user!=null){
+                if(user.id != -1 && user.email!="" && user.password!=""){
+                    imgUtils.getProducts1(getApplicationContext());
+                    imgUtils.getProducts2(getApplicationContext());
+                    imgUtils.getProducts3(getApplicationContext());
+                    imgUtils.getProducts4(getApplicationContext());
+                    imgUtils.getProducts5(getApplicationContext());
+                    imgUtils.getProducts6(getApplicationContext());
+                    login(user.email,user.password);
 
+                }
             }
             else{
                 Intent i =new Intent(this,LoginActivity.class);
