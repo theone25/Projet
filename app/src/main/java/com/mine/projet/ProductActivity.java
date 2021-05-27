@@ -28,7 +28,7 @@ public class ProductActivity extends AppCompatActivity {
         TextView tvprodprix = (TextView)findViewById(R.id.tvprodprix);
         TextView tvproddetails = (TextView)findViewById(R.id.tvproddetails);
 
-        //Getting image uri from previous screen
+
         if (getIntent() != null) {
             stringImageUri =(Produit) getIntent().getSerializableExtra(ImageListFragment.STRING_IMAGE_URI);
             imagePosition = getIntent().getIntExtra(ImageListFragment.STRING_IMAGE_POSITION,0);

@@ -37,26 +37,26 @@ public class PanierActivity extends AppCompatActivity {
         mContext = PanierActivity.this;
         imgUtils imageUrlUtils = new imgUtils();
         textaction = (TextView) findViewById(R.id.text_action_bottom1);
-        ArrayList<Produit> cartlistImageUri =imageUrlUtils.getCartListProduit();
+        ArrayList<Produit> panierProds =imageUrlUtils.getCartListProduit();
         prix=0;
-        for(Produit p : cartlistImageUri){
+        for(Produit p : panierProds){
             prix=prix+Float.parseFloat(p.prix);
         }
-        //Show cart layout based on items
-        setCartLayout();
+
+        setPanierLayout();
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
 
         recyclerView.setLayoutManager(recylerViewLayoutManager);
-        recyclerView.setAdapter(new PanierActivity.SimpleStringRecyclerViewAdapter(recyclerView, cartlistImageUri));
+        recyclerView.setAdapter(new PanierActivity.SimpleStringRecyclerViewAdapter(recyclerView, panierProds));
     }
 
     public static class SimpleStringRecyclerViewAdapter
             extends RecyclerView.Adapter<PanierActivity.SimpleStringRecyclerViewAdapter.ViewHolder> {
 
-        private ArrayList<Produit> mCartlistImageUri;
-        private RecyclerView mRecyclerView;
+        private ArrayList<Produit> maPanierProd;
+        private RecyclerView monRecyclerView;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
@@ -80,8 +80,8 @@ public class PanierActivity extends AppCompatActivity {
         }
 
         public SimpleStringRecyclerViewAdapter(RecyclerView recyclerView, ArrayList<Produit> wishlistImageUri) {
-            mCartlistImageUri = wishlistImageUri;
-            mRecyclerView = recyclerView;
+            maPanierProd = wishlistImageUri;
+            monRecyclerView = recyclerView;
         }
 
         @Override
@@ -104,17 +104,17 @@ public class PanierActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final PanierActivity.SimpleStringRecyclerViewAdapter.ViewHolder holder, final int position) {
 
-            final Uri uri = Uri.parse(mCartlistImageUri.get(position).image);
+            final Uri uri = Uri.parse(maPanierProd.get(position).image);
             holder.mImageView.setImageURI(uri);
-            holder.tvnom.setText(mCartlistImageUri.get(position).nom);
-            holder.tvprix.setText(mCartlistImageUri.get(position).prix+" MAD");
+            holder.tvnom.setText(maPanierProd.get(position).nom);
+            holder.tvprix.setText(maPanierProd.get(position).prix+" MAD");
             textaction.setText(String.valueOf(PanierActivity.prix)+" MAD");
-            holder.tvdetails.setText(mCartlistImageUri.get(position).details);
+            holder.tvdetails.setText(maPanierProd.get(position).details);
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ProductActivity.class);
-                    intent.putExtra(STRING_IMAGE_URI,mCartlistImageUri.get(position));
+                    intent.putExtra(STRING_IMAGE_URI,maPanierProd.get(position));
                     intent.putExtra(STRING_IMAGE_POSITION, position);
                     mContext.startActivity(intent);
                 }
@@ -147,23 +147,23 @@ public class PanierActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mCartlistImageUri.size();
+            return maPanierProd.size();
         }
     }
 
-    protected void setCartLayout(){
-        LinearLayout layoutCartItems = (LinearLayout) findViewById(R.id.layout_items);
-        LinearLayout layoutCartPayments = (LinearLayout) findViewById(R.id.layout_payment);
-        LinearLayout layoutCartNoItems = (LinearLayout) findViewById(R.id.layout_cart_empty);
+    protected void setPanierLayout(){
+        LinearLayout layoutpanierItems = (LinearLayout) findViewById(R.id.layout_items);
+        LinearLayout layoutpanierPaie = (LinearLayout) findViewById(R.id.layout_payment);
+        LinearLayout layoutpanierNoItems = (LinearLayout) findViewById(R.id.layout_cart_empty);
 
-        if(Main2Activity.notificationCountCart >0){
-            layoutCartNoItems.setVisibility(View.GONE);
-            layoutCartItems.setVisibility(View.VISIBLE);
-            layoutCartPayments.setVisibility(View.VISIBLE);
+        if(imgUtils.listPanierProds.size() >0){
+            layoutpanierNoItems.setVisibility(View.GONE);
+            layoutpanierItems.setVisibility(View.VISIBLE);
+            layoutpanierPaie.setVisibility(View.VISIBLE);
         }else {
-            layoutCartNoItems.setVisibility(View.VISIBLE);
-            layoutCartItems.setVisibility(View.GONE);
-            layoutCartPayments.setVisibility(View.GONE);
+            layoutpanierNoItems.setVisibility(View.VISIBLE);
+            layoutpanierItems.setVisibility(View.GONE);
+            layoutpanierPaie.setVisibility(View.GONE);
 
             Button bStartShopping = (Button) findViewById(R.id.bAddNew);
             bStartShopping.setOnClickListener(new View.OnClickListener() {
