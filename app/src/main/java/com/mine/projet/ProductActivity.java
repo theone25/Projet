@@ -12,6 +12,10 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mine.projet.fragments.ImageListFragment;
 import com.mine.projet.models.Produit;
+import com.mine.projet.tinycart.Cart;
+import com.mine.projet.tinycart.TinyCartHelper;
+
+import java.util.Map;
 
 public class ProductActivity extends AppCompatActivity {
 
@@ -53,6 +57,8 @@ public class ProductActivity extends AppCompatActivity {
             public void onClick(View view) {
                 imgUtils imageUrlUtils = new imgUtils();
                 imageUrlUtils.addCartListProduit(stringImageUri);
+                Cart cart = TinyCartHelper.getCart();
+                    cart.addItem(stringImageUri,1);
                 Toast.makeText(ProductActivity.this,"Ajouté au panier.",Toast.LENGTH_SHORT).show();
                 Main2Activity.notificationCountCart++;
                 // apres

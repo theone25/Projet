@@ -38,7 +38,7 @@ public class appimageconf {
                 Integer.MAX_VALUE,
                 MAX_MEMORY_CACHE_SIZE,
                 Integer.MAX_VALUE,
-                Integer.MAX_VALUE);    
+                Integer.MAX_VALUE);
         configBuilder
                 .setBitmapMemoryCacheParamsSupplier(
                         new Supplier<MemoryCacheParams>() {

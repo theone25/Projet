@@ -1,14 +1,17 @@
 package com.mine.projet.models;
 
+import com.mine.projet.tinycart.Item;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Produit implements Serializable {
+public class Produit implements Item,Serializable {
     public int id;
     public int categorie;
     public String nom;
@@ -40,5 +43,20 @@ public class Produit implements Serializable {
         }
 
         return res;
+    }
+
+    @Override
+    public BigDecimal getItemPrice() {
+        return BigDecimal.valueOf(Long.parseLong(this.prix));
+    }
+
+    @Override
+    public Produit getProduit() {
+        return this;
+    }
+
+    @Override
+    public String getItemName() {
+        return this.nom;
     }
 }

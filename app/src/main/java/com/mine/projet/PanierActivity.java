@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mine.projet.customwidgets.HorizontalNumberPicker;
 import com.mine.projet.models.Produit;
+import com.mine.projet.tinycart.Cart;
+import com.mine.projet.tinycart.TinyCartHelper;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,9 @@ public class PanierActivity extends AppCompatActivity {
         mContext = PanierActivity.this;
         imgUtils imageUrlUtils = new imgUtils();
         textaction = (TextView) findViewById(R.id.text_action_bottom1);
-        ArrayList<Produit> panierProds =imageUrlUtils.getCartListProduit();
+        //ArrayList<Produit> panierProds = imageUrlUtils.getCartListProduit();
+        Cart cart = TinyCartHelper.getCart();
+        ArrayList<Produit> panierProds = cart.getAllItems();
         prix=0;
         for(Produit p : panierProds){
             prix=prix+Float.parseFloat(p.prix);
@@ -79,7 +83,9 @@ public class PanierActivity extends AppCompatActivity {
                 tvdetails=(TextView) mLayoutItem.findViewById(R.id.pandetails);
                 tvnom=(TextView) mLayoutItem.findViewById(R.id.pannom);
                 pickerlinlay=(LinearLayout) mLayoutItem.findViewById(R.id.pickerlinearlayout);
-                np_channel_nr = pickerlinlay.findViewById(R.id.np_channel_nr);
+                np_channel_nr = (HorizontalNumberPicker) pickerlinlay.findViewById(R.id.np_channel_nr);
+                np_channel_nr.setMin(0);
+
 
             }
         }
@@ -111,7 +117,20 @@ public class PanierActivity extends AppCompatActivity {
             holder.mImageView.setImageURI(uri);
             holder.tvnom.setText(maPanierProd.get(position).nom);
             holder.tvprix.setText(maPanierProd.get(position).prix+" MAD");
-            textaction.setText(String.valueOf(PanierActivity.prix)+" MAD");
+            Cart cart = TinyCartHelper.getCart();
+            textaction.setText(cart.getTotalPrice()+" MAD");
+            holder.np_channel_nr.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(holder.np_channel_nr.getValue()==0){
+                        cart.removeItem(maPanierProd.get(position));
+                        textaction.setText(cart.getTotalPrice()+" MAD");
+                    }else{
+                        cart.updateItem(maPanierProd.get(position),holder.np_channel_nr.getValue());
+                        textaction.setText(cart.getTotalPrice()+" MAD");
+                    }
+                }
+            });
             holder.np_channel_nr.setValue(1);
             holder.tvdetails.setText(maPanierProd.get(position).details);
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
