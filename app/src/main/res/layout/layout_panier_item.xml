@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingBottom="@dimen/margin_medium">
@@ -24,37 +25,39 @@
                 android:layout_height="wrap_content"
                 android:text="Denim Shirt"
                 android:id="@+id/pannom"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Slim fit, cotton"
                 android:id="@+id/pandetails"
-                android:textSize="@dimen/text_size_small"/>
+                android:textSize="@dimen/text_size_large"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="prix"
                 android:id="@+id/panprix"
-                android:textSize="@dimen/text_size_xmedium"
+                android:textSize="@dimen/text_size_large"
                 android:textColor="#4CAF50"
                 android:layout_marginTop="@dimen/margin_small"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Livraison: Gratuite"
-                android:textSize="@dimen/text_size_small"/>
+                android:textSize="@dimen/text_size_large"/>
             <LinearLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/pickerlinearlayout"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/margin_medium">
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Qty: 1"
-                    android:textSize="@dimen/text_size_small"/>
-                <com.mine.projet.customwidgets.HorizontalNumberPicker
-                    android:id="@+id/np_channel_nr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <com.travijuu.numberpicker.library.NumberPicker
+                    android:id="@+id/number_picker"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    numberpicker:min="0"
+                    numberpicker:max="10"
+                    numberpicker:value="-5"
+                    numberpicker:unit="1"
+                    numberpicker:focusable="false"
+                    numberpicker:custom_layout="@layout/number_picker_layout" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

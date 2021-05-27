@@ -16,10 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.mine.projet.customwidgets.HorizontalNumberPicker;
 import com.mine.projet.models.Produit;
 import com.mine.projet.tinycart.Cart;
 import com.mine.projet.tinycart.TinyCartHelper;
+import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.util.ArrayList;
 
@@ -69,7 +69,7 @@ public class PanierActivity extends AppCompatActivity {
             public final LinearLayout mLayoutItem, mLayoutRemove , mLayoutEdit;
             public TextView tvprix,tvnom,tvdetails;
             public LinearLayout pickerlinlay;
-            public HorizontalNumberPicker np_channel_nr;
+            public NumberPicker np_channel_nr;
 
             public ViewHolder(View view) {
                 super(view);
@@ -83,7 +83,7 @@ public class PanierActivity extends AppCompatActivity {
                 tvdetails=(TextView) mLayoutItem.findViewById(R.id.pandetails);
                 tvnom=(TextView) mLayoutItem.findViewById(R.id.pannom);
                 pickerlinlay=(LinearLayout) mLayoutItem.findViewById(R.id.pickerlinearlayout);
-                np_channel_nr = (HorizontalNumberPicker) pickerlinlay.findViewById(R.id.np_channel_nr);
+                np_channel_nr = (NumberPicker) pickerlinlay.findViewById(R.id.number_picker);
                 np_channel_nr.setMin(0);
 
 
@@ -119,18 +119,6 @@ public class PanierActivity extends AppCompatActivity {
             holder.tvprix.setText(maPanierProd.get(position).prix+" MAD");
             Cart cart = TinyCartHelper.getCart();
             textaction.setText(cart.getTotalPrice()+" MAD");
-            holder.np_channel_nr.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(holder.np_channel_nr.getValue()==0){
-                        cart.removeItem(maPanierProd.get(position));
-                        textaction.setText(cart.getTotalPrice()+" MAD");
-                    }else{
-                        cart.updateItem(maPanierProd.get(position),holder.np_channel_nr.getValue());
-                        textaction.setText(cart.getTotalPrice()+" MAD");
-                    }
-                }
-            });
             holder.np_channel_nr.setValue(1);
             holder.tvdetails.setText(maPanierProd.get(position).details);
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
@@ -152,8 +140,10 @@ public class PanierActivity extends AppCompatActivity {
 
                     imageUrlUtils.removeCartListProduit(position);
                     notifyDataSetChanged();
-                    PanierActivity.prix=PanierActivity.prix-imageUrlUtils.getCartListProduitPrix(position);
-                    textaction.setText(PanierActivity.prix+" MAD");
+                    if(maPanierProd.size()>0){
+                        PanierActivity.prix=PanierActivity.prix-imageUrlUtils.getCartListProduitPrix(position);
+                        textaction.setText(PanierActivity.prix+" MAD");
+                    }
                     //panierCOUT.setText("0 DH");
                     //Decrease notification count
                     Main2Activity.notificationCountCart--;
@@ -165,6 +155,15 @@ public class PanierActivity extends AppCompatActivity {
             holder.mLayoutEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    System.out.println("----val>"+holder.np_channel_nr.getValue());
+                    if(holder.np_channel_nr.getValue()==0){
+                        cart.removeItem(maPanierProd.get(position));
+                        textaction.setText(cart.getTotalPrice()+" MAD");
+
+                    }else{
+                        cart.updateItem(maPanierProd.get(position),holder.np_channel_nr.getValue());
+                        textaction.setText(cart.getTotalPrice()+" MAD");
+                    }
                 }
             });
         }
@@ -179,8 +178,9 @@ public class PanierActivity extends AppCompatActivity {
         LinearLayout layoutpanierItems = (LinearLayout) findViewById(R.id.layout_items);
         LinearLayout layoutpanierPaie = (LinearLayout) findViewById(R.id.layout_payment);
         LinearLayout layoutpanierNoItems = (LinearLayout) findViewById(R.id.layout_cart_empty);
-
-        if(imgUtils.listPanierProds.size() >0){
+        Cart cart = TinyCartHelper.getCart();
+        ArrayList<Produit> panierProds = cart.getAllItems();
+        if(panierProds.size() >0){
             layoutpanierNoItems.setVisibility(View.GONE);
             layoutpanierItems.setVisibility(View.VISIBLE);
             layoutpanierPaie.setVisibility(View.VISIBLE);

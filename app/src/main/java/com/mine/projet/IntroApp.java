@@ -39,6 +39,7 @@ public class IntroApp extends AppIntro {
         super.onCreate(savedInstanceState);
         ctx=IntroApp.this;
         appp = new appPref(this);
+        System.out.println("----> hereeerre");
         SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         if (appp.isFirstTimeLaunch()==false) {
             Gson gson = new Gson();
@@ -53,6 +54,7 @@ public class IntroApp extends AppIntro {
                     imgUtils.getProducts5(getApplicationContext());
                     imgUtils.getProducts6(getApplicationContext());
                     login(user.email,user.password);
+
 
                 }
             }
@@ -142,15 +144,25 @@ public class IntroApp extends AppIntro {
 
                             for(int i=0; i < json.length(); i++) {
                                 JSONObject respObj = json.getJSONObject(i);
-                                String name = respObj.getString("name");
+                                String first_name = respObj.getString("first_name");
+                                String last_name = respObj.getString("last_name");
+                                String phone = respObj.getString("phone");
                                 int id = respObj.getInt("id");
                                 String password = respObj.getString("password");
                                 String email = respObj.getString("email");
-                                log.putExtra("id",id);
-                                log.putExtra("name",name);
-                                log.putExtra("email",email);
+                                User user=new User();
+                                user.email=email;
+                                user.id=id;
+                                user.nom=last_name;
+                                user.prenom=first_name;
+                                user.tel=phone;
+                                user.password=password;
+                                log.putExtra("id", id);
+                                log.putExtra("first_name", first_name);
+                                log.putExtra("last_name", last_name);
+                                log.putExtra("phone", phone);
+                                log.putExtra("email", email);
                                 startActivity(log);
-                                finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
