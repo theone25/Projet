@@ -15,6 +15,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.mine.projet.models.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,18 +79,23 @@ public class RegisterActivity extends AppCompatActivity {
                                 String first_name = respObj.getString("first_name");
                                 String last_name = respObj.getString("last_name");
                                 String phone = respObj.getString("phone");
-
                                 int id = respObj.getInt("id");
                                 String password = respObj.getString("password");
                                 String email = respObj.getString("email");
+                                User user=new User();
+                                user.email=email;
+                                user.id=id;
+                                user.nom=last_name;
+                                user.prenom=first_name;
+                                user.tel=phone;
+                                user.password=password;
                                 log.putExtra("id", id);
                                 log.putExtra("first_name", first_name);
                                 log.putExtra("last_name", last_name);
                                 log.putExtra("phone", phone);
-
                                 log.putExtra("email", email);
                                 startActivity(log);
-                                saveLoggedInUId(id, email, password);
+                                saveLoggedInUId(user);
                                 finish();
                             }
                         } catch (JSONException e) {
@@ -115,13 +122,14 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(strreq);
     }
 
-    private void saveLoggedInUId(int id, String username, String password) {
+    private void saveLoggedInUId(User user) {
         SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
-        SharedPreferences.Editor myEditor = settings.edit();
-        myEditor.putInt("uid", id);
-        myEditor.putString("username", username);
-        myEditor.putString("password", password);
-        myEditor.commit();
+        SharedPreferences.Editor prefsEditor = settings.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        prefsEditor.putString("user", json);
+        prefsEditor.commit();
+
     }
 
 }

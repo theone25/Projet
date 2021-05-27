@@ -19,6 +19,8 @@ import com.github.appintro.AppIntro;
 import com.github.appintro.AppIntroFragment;
 import com.github.appintro.indicator.DotIndicatorController;
 import com.github.appintro.indicator.IndicatorController;
+import com.google.gson.Gson;
+import com.mine.projet.models.User;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -39,20 +41,17 @@ public class IntroApp extends AppIntro {
         appp = new appPref(this);
         SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
         if (appp.isFirstTimeLaunch()==false) {
-            int userID=prefs.getInt("id",-1);
-            String userName=prefs.getString("username","");
-            String userPass=prefs.getString("password","");
-            System.out.println(userID);
-            System.out.println(userName);
-            System.out.println(userPass);
-            if(userID != -1 && userName!="" && userPass!=""){
+            Gson gson = new Gson();
+            String json = prefs.getString("user", "");
+            User user = gson.fromJson(json, User.class);
+            if(user.id != -1 && user.email!="" && user.password!=""){
                 imgUtils.getProducts1(getApplicationContext());
                 imgUtils.getProducts2(getApplicationContext());
                 imgUtils.getProducts3(getApplicationContext());
                 imgUtils.getProducts4(getApplicationContext());
                 imgUtils.getProducts5(getApplicationContext());
                 imgUtils.getProducts6(getApplicationContext());
-                login(userName,userPass);
+                login(user.email,user.password);
 
             }
             else{
