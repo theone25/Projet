@@ -44,9 +44,7 @@ public class imgUtils {
                             // on below line we are passing our response
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
-                            System.out.println(Response);
                             prod1=Produit.fromJson(json);
-                            System.out.println(Response);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -78,9 +76,9 @@ public class imgUtils {
                             // on below line we are passing our response
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
-                            System.out.println(Response);
+
                             prod2=Produit.fromJson(json);
-                            System.out.println(Response);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -112,9 +110,9 @@ public class imgUtils {
                             // on below line we are passing our response
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
-                            System.out.println(Response);
+
                             prod3=Produit.fromJson(json);
-                            System.out.println(Response);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -146,9 +144,9 @@ public class imgUtils {
                             // on below line we are passing our response
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
-                            System.out.println(Response);
+
                             prod4=Produit.fromJson(json);
-                            System.out.println(Response);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -180,9 +178,9 @@ public class imgUtils {
                             // on below line we are passing our response
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
-                            System.out.println(Response);
+
                             prod5=Produit.fromJson(json);
-                            System.out.println(Response);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -214,9 +212,9 @@ public class imgUtils {
                             // on below line we are passing our response
                             // to json object to extract data from it.
                             JSONArray json = new JSONArray(Response);
-                            System.out.println(Response);
+
                             prod6=Produit.fromJson(json);
-                            System.out.println(Response);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -231,6 +229,39 @@ public class imgUtils {
         public Map<String, String> getParams(){
             Map<String, String> params = new HashMap<>();
             params.put("categorie", "6");
+            return params;
+        }
+        };
+        queue.add(strreq);
+
+    }
+
+    public static void getAllProduits( Context context){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest strreq = new StringRequest(Request.Method.POST,
+                "https://fptandroid.000webhostapp.com/produitsAll.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            // on below line we are passing our response
+                            // to json object to extract data from it.
+                            JSONArray json = new JSONArray(Response);
+
+                            ProductActivity.allprods=Produit.fromJson(json);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+            }
+        }){@Override
+        public Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
             return params;
         }
         };
@@ -333,6 +364,42 @@ public class imgUtils {
             Map<String, String> params = new HashMap<>();
             params.put("user", String.valueOf(userID));
             params.put("produit", String.valueOf(prodID));
+            return params;
+        }
+        };
+        queue.add(strreq);
+    }
+
+    public static void getfavs(int id,Context ctx){
+        RequestQueue queue = Volley.newRequestQueue(ctx);
+        StringRequest strreq = new StringRequest(Request.Method.POST,
+                "https://fptandroid.000webhostapp.com/favsList.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            // on below line we are passing our response
+                            // to json object to extract data from it.
+                            JSONArray json = new JSONArray(Response);
+                            System.out.println(json);
+
+                            for(int i=0; i < json.length(); i++) {
+                                JSONObject respObj = json.getJSONObject(i);
+                                listFavProds=Produit.fromJson(json);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+            }
+        }){@Override
+        public Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
+            params.put("user", String.valueOf(id));
             return params;
         }
         };

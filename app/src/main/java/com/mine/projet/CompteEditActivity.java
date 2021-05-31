@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.mine.projet.models.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +36,11 @@ public class CompteEditActivity extends AppCompatActivity {
     Button save_profile;
     Button cancel_btn;
     appPref appp;
+    TextView profile_name;
+    TextView profile_email;
+    TextView profile_tel;
     public static final String MY_PREFS = "SharedPreferences";
-
+    LinearLayout linearlayoutmyddress;
     final int PROFILE_EDIT = 1;
     public String userPass;
     public String email;
@@ -52,12 +59,22 @@ public class CompteEditActivity extends AppCompatActivity {
         profile_old_password = findViewById(R.id.password);
         profile_new_password = findViewById(R.id.password_new);
 
-        appp = new appPref(this);
+        LinearLayout lin=findViewById(R.id.linearlayoutaccountprofile);
+        profile_name = lin.findViewById(R.id.userm);
+        profile_email = lin.findViewById(R.id.usern);
+        profile_tel = lin.findViewById(R.id.usert);
+        linearlayoutmyddress=findViewById(R.id.linearlayoutmyddress);
+
         SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
-        int userID = prefs.getInt("id", -1);
-         email = prefs.getString("username", "");
-        userPass = prefs.getString("password", "");
-         name = prefs.getString("name", "");
+        Gson gson = new Gson();
+        String json = prefs.getString("user", "");
+        User user = gson.fromJson(json, User.class);
+
+        profile_name.setText(user.nom);
+        profile_email.setText(user.email);
+        profile_tel.setText(user.tel);
+
+
         etnom.setText(name);
         etprenom.setText(name);
         etemail.setText(email);
@@ -67,11 +84,14 @@ public class CompteEditActivity extends AppCompatActivity {
                     profile_old_password.getText().toString().equals(userPass)) {
                 userPass = profile_new_password.getText().toString();
             }
+            else{
+                userPass=user.password;
+            }
             email = etemail.getText().toString().trim().isEmpty()? email:etemail.getText().toString();
             name = etnom.getText().toString().trim().isEmpty()? name:etnom.getText().toString();
 
 
-            saveProfile(String.valueOf(userID), name,email, userPass);
+            saveProfile(String.valueOf(user.id), name,email, userPass);
             Intent i =new Intent();
             i.putExtra("username",email);
             i.putExtra("name",name);
@@ -101,14 +121,25 @@ public class CompteEditActivity extends AppCompatActivity {
 
                             for (int i = 0; i < json.length(); i++) {
                                 JSONObject respObj = json.getJSONObject(i);
-                                String name = respObj.getString("name");
+                                String first_name = respObj.getString("first_name");
+                                String last_name = respObj.getString("last_name");
+                                String phone = respObj.getString("phone");
                                 int id = respObj.getInt("id");
                                 String password = respObj.getString("password");
                                 String email = respObj.getString("email");
+                                User user=new User();
+                                user.email=email;
+                                user.id=id;
+                                user.nom=last_name;
+                                user.prenom=first_name;
+                                user.tel=phone;
+                                user.password=password;
                                 log.putExtra("id", id);
-                                log.putExtra("name", name);
+                                log.putExtra("first_name", first_name);
+                                log.putExtra("last_name", last_name);
+                                log.putExtra("phone", phone);
                                 log.putExtra("email", email);
-                                saveLoggedInUId(id, email, password);
+                                saveLoggedInUId(user);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -133,13 +164,13 @@ public class CompteEditActivity extends AppCompatActivity {
         queue.add(strreq);
     }
 
-    private void saveLoggedInUId(int id, String username, String password) {
+    private void saveLoggedInUId(User user) {
         SharedPreferences settings = getSharedPreferences(MY_PREFS, 0);
-        SharedPreferences.Editor myEditor = settings.edit();
-        myEditor.putInt("uid", id);
-        myEditor.putString("username", username);
-        myEditor.putString("password", password);
-        myEditor.commit();
+        SharedPreferences.Editor prefsEditor = settings.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        prefsEditor.putString("user", json);
+        prefsEditor.commit();
     }
 
 }

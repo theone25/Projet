@@ -11,12 +11,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.mine.projet.models.Produit;
+import com.mine.projet.tinycart.Cart;
+import com.mine.projet.tinycart.TinyCartHelper;
 
 import java.util.ArrayList;
 
@@ -25,14 +29,15 @@ import static com.mine.projet.fragments.ImageListFragment.STRING_IMAGE_URI;
 
 public class FavorisActivity extends AppCompatActivity {
     public static Context mContext;
+    ArrayList<Produit> favliste;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoris);
         mContext = FavorisActivity.this;
-
+        getSupportActionBar().setTitle("Mes Favoris");
         imgUtils imageUrlUtils = new imgUtils();
-        ArrayList<Produit> favliste =imageUrlUtils.getWishlistProduit();
+        favliste =imageUrlUtils.getWishlistProduit();
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
 
@@ -117,6 +122,26 @@ public class FavorisActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return mfavliste.size();
+        }
+    }
+    protected void setPanierLayout(){
+        RecyclerView layoutpanierItems = (RecyclerView) findViewById(R.id.recyclerview);
+        LinearLayout layoutpanierNoItems = (LinearLayout) findViewById(R.id.layout_cart_empty);
+
+        if(favliste.size() >0){
+            layoutpanierNoItems.setVisibility(View.GONE);
+            layoutpanierItems.setVisibility(View.VISIBLE);
+        }else {
+            layoutpanierNoItems.setVisibility(View.VISIBLE);
+            layoutpanierItems.setVisibility(View.GONE);
+
+            Button bStartShopping = (Button) findViewById(R.id.bAddNew);
+            bStartShopping.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
         }
     }
 }

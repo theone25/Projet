@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,14 +15,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+import com.mine.projet.models.Commande;
 import com.mine.projet.models.Produit;
+import com.mine.projet.models.User;
 import com.mine.projet.tinycart.Cart;
 import com.mine.projet.tinycart.TinyCartHelper;
 import com.travijuu.numberpicker.library.NumberPicker;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import static com.mine.projet.fragments.ImageListFragment.STRING_IMAGE_POSITION;
@@ -31,7 +47,10 @@ public class PanierActivity extends AppCompatActivity {
     public static TextView panierCOUT;
     private static Context mContext;
     public static float prix;
+    public static final String MY_PREFS = "SharedPreferences";
+    User user;
     public static TextView  textaction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +59,7 @@ public class PanierActivity extends AppCompatActivity {
         mContext = PanierActivity.this;
         imgUtils imageUrlUtils = new imgUtils();
         textaction = (TextView) findViewById(R.id.text_action_bottom1);
+        getSupportActionBar().setTitle("Mon Panier");
         //ArrayList<Produit> panierProds = imageUrlUtils.getCartListProduit();
         Cart cart = TinyCartHelper.getCart();
         ArrayList<Produit> panierProds = cart.getAllItems();
@@ -47,6 +67,11 @@ public class PanierActivity extends AppCompatActivity {
         for(Produit p : panierProds){
             prix=prix+Float.parseFloat(p.prix);
         }
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("user", "");
+        user = gson.fromJson(json, User.class);
+
 
         setPanierLayout();
 
@@ -71,9 +96,11 @@ public class PanierActivity extends AppCompatActivity {
             public LinearLayout pickerlinlay;
             public NumberPicker np_channel_nr;
 
+
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
+
                 mImageView = (SimpleDraweeView) view.findViewById(R.id.image_cartlist);
                 mLayoutItem = (LinearLayout) view.findViewById(R.id.layout_item_desc);
                 mLayoutRemove = (LinearLayout) view.findViewById(R.id.layout_action1);
@@ -119,8 +146,9 @@ public class PanierActivity extends AppCompatActivity {
             holder.tvprix.setText(maPanierProd.get(position).prix+" MAD");
             Cart cart = TinyCartHelper.getCart();
             textaction.setText(cart.getTotalPrice()+" MAD");
-            holder.np_channel_nr.setValue(1);
+            holder.np_channel_nr.setValue(cart.getItemQty(maPanierProd.get(position)));
             holder.tvdetails.setText(maPanierProd.get(position).details);
+
             holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -166,6 +194,7 @@ public class PanierActivity extends AppCompatActivity {
                     }
                 }
             });
+
         }
 
         @Override
@@ -174,10 +203,28 @@ public class PanierActivity extends AppCompatActivity {
         }
     }
 
+
+
     protected void setPanierLayout(){
         LinearLayout layoutpanierItems = (LinearLayout) findViewById(R.id.layout_items);
         LinearLayout layoutpanierPaie = (LinearLayout) findViewById(R.id.layout_payment);
         LinearLayout layoutpanierNoItems = (LinearLayout) findViewById(R.id.layout_cart_empty);
+        TextView textaction2 = (TextView) layoutpanierPaie.findViewById(R.id.text_action_bottom2);
+        textaction2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ListAdresseActivity.adres.size()==0 || ListAdresseActivity.adres==null){
+                    Toast.makeText(PanierActivity.this, "Vous dever ajouter une Adresse", Toast.LENGTH_SHORT).show();
+                    Intent log =new Intent(PanierActivity.this, ListAdresseActivity.class);
+                    startActivity(log);
+                    finish();
+                }
+                else{
+                    saveCom();
+                }
+
+            }
+        });
         Cart cart = TinyCartHelper.getCart();
         ArrayList<Produit> panierProds = cart.getAllItems();
         if(panierProds.size() >0){
@@ -197,6 +244,51 @@ public class PanierActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void saveCom() {
+        Cart cart = TinyCartHelper.getCart();
+        RequestQueue queue = Volley.newRequestQueue(PanierActivity.this);
+        StringRequest strreq = new StringRequest(Request.Method.POST,
+                "https://fptandroid.000webhostapp.com/order.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            // on below line we are passing our response
+                            // to json object to extract data from it.
+                            JSONArray json = new JSONArray(Response);
+                            System.out.println(json);
+                            ProductActivity.mesComs=Commande.fromJson(json);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                JSONArray mycoms = new JSONArray();
+                ArrayList<Commande> coms=new ArrayList<>();
+                for(Produit p : cart.getAllItems()){
+                    coms.add(new Commande(0,user.id,ListAdresseActivity.adres.get(0).id,p.id,cart.getItemQty(p),""));
+                }
+                for(int i=0; i < coms.size(); i++) {
+                    mycoms.put(coms.get(i));   // create array and add items into that
+                }
+                //send json array of commands
+                params.put("prods", String.valueOf(mycoms));
+                System.out.println(mycoms);
+                return params;
+            }
+        };
+        queue.add(strreq);
     }
 
 }

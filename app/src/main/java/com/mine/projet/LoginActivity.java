@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.mine.projet.customwidgets.LoadingDialog;
 import com.mine.projet.db.*;
 
 import android.content.Intent;
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SharedPreferences mySharedPreferences = getSharedPreferences(MY_PREFS, 0);
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.putLong("uid", 0);
@@ -72,13 +74,16 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
                 //postDataUsingVolley(user.getText().toString(),pass.getText().toString());
-                login(user.getText().toString(),pass.getText().toString());
+                LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+                loadingDialog.show();
                 imgUtils.getProducts1(getApplicationContext());
                 imgUtils.getProducts2(getApplicationContext());
                 imgUtils.getProducts3(getApplicationContext());
                 imgUtils.getProducts4(getApplicationContext());
                 imgUtils.getProducts5(getApplicationContext());
                 imgUtils.getProducts6(getApplicationContext());
+                imgUtils.getAllProduits(getApplicationContext());
+                login(user.getText().toString(),pass.getText().toString());
             }
         });
 
@@ -109,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
         String json = gson.toJson(user);
         prefsEditor.putString("user", json);
         prefsEditor.commit();
+        imgUtils.getfavs(user.id,LoginActivity.this);
     }
 
 

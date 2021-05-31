@@ -19,7 +19,9 @@ import com.github.appintro.AppIntro;
 import com.github.appintro.AppIntroFragment;
 import com.github.appintro.indicator.DotIndicatorController;
 import com.github.appintro.indicator.IndicatorController;
+import com.gk.emon.lovelyLoading.LoadingPopup;
 import com.google.gson.Gson;
+import com.mine.projet.customwidgets.LoadingDialog;
 import com.mine.projet.models.User;
 
 import org.jetbrains.annotations.Nullable;
@@ -34,33 +36,40 @@ public class IntroApp extends AppIntro {
     appPref appp ;
     public static Context ctx ;
     public static final String MY_PREFS = "SharedPreferences";
+    Intent log ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ctx=IntroApp.this;
+
         appp = new appPref(this);
-        System.out.println("----> hereeerre");
         SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        log=new Intent(this, Main2Activity.class);
         if (appp.isFirstTimeLaunch()==false) {
             Gson gson = new Gson();
             String json = prefs.getString("user", "");
             User user = gson.fromJson(json, User.class);
             if(user!=null){
                 if(user.id != -1 && user.email!="" && user.password!=""){
+                    LoadingDialog loadingDialog = new LoadingDialog(this);
+                    loadingDialog.show();
                     imgUtils.getProducts1(getApplicationContext());
                     imgUtils.getProducts2(getApplicationContext());
                     imgUtils.getProducts3(getApplicationContext());
                     imgUtils.getProducts4(getApplicationContext());
                     imgUtils.getProducts5(getApplicationContext());
                     imgUtils.getProducts6(getApplicationContext());
+                    imgUtils.getAllProduits(getApplicationContext());
                     login(user.email,user.password);
-
+                    imgUtils.getfavs(user.id,IntroApp.this);
+                    loadingDialog.dismiss();
 
                 }
             }
             else{
                 Intent i =new Intent(this,LoginActivity.class);
                 startActivity(i);
+                this.finish();
             }
 
 
@@ -129,7 +138,7 @@ public class IntroApp extends AppIntro {
     }
 
     public void login(String reqemail, String reqpass){
-        Intent log =new Intent(this, Main2Activity.class);
+
         RequestQueue queue = Volley.newRequestQueue(IntroApp.this);
         StringRequest strreq = new StringRequest(Request.Method.POST,
                 "https://fptandroid.000webhostapp.com/",
@@ -163,6 +172,7 @@ public class IntroApp extends AppIntro {
                                 log.putExtra("phone", phone);
                                 log.putExtra("email", email);
                                 startActivity(log);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.mine.projet.customwidgets.LoadingDialog;
 import com.mine.projet.models.User;
 
 import org.json.JSONArray;
@@ -40,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         nom = findViewById(R.id.et_nom);
         prenom = findViewById(R.id.et_prenom);
         email = findViewById(R.id.editTextTextEmailAddress);
@@ -52,8 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(v -> {
             if (nom.getText().length() > 0 && prenom.getText().length() > 0 && email.getText().length() > 0 && password.getText().length() > 0 && password_conf.getText().length() > 0 && tel.getText().length()>0) {
                 if (password.getText().toString().equals(password_conf.getText().toString()) ) {
+                    LoadingDialog loadingDialog = new LoadingDialog(this);
+                    loadingDialog.show();
                     register(prenom.getText().toString().trim() , nom.getText().toString().trim(), email.getText().toString().trim(), password.getText().toString(),tel.getText().toString().trim());
                 }
+
             }
         });
 
@@ -95,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 log.putExtra("phone", phone);
                                 log.putExtra("email", email);
                                 startActivity(log);
-                                saveLoggedInUId(user);
+                                    saveLoggedInUId(user);
                                 finish();
                             }
                         } catch (JSONException e) {

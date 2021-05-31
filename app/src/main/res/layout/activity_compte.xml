@@ -34,7 +34,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Aayushi Gupta"
+                android:text="user"
                 android:textColor="@color/gen_white" />
 
             <TextView
@@ -43,23 +43,17 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="919910882990"
+                android:text="tel"
                 android:textColor="@color/gen_white" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
                 <TextView
+                    android:id="@+id/profile_tel"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="it.aygpt@gmail.com"
+                    android:text="email"
                     android:textColor="@color/gen_white" />
-
-            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -141,12 +135,10 @@
                     android:layout_height="wrap_content"
                     android:text="sauvgarder mon adresse pour une livraison plus vite!" />
 
-                <View
+                <ListView
+                    android:id="@+id/adrList"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/grey_light" />
-
+                    android:layout_height="match_parent"/>
                 <TextView
                     android:id="@+id/addanaddress"
                     android:layout_width="150dp"

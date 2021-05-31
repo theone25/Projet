@@ -26,31 +26,29 @@
                 app:civ_border_width="5dp"
                 app:civ_border_color="@color/gen_white"/>
             <TextView
+                android:id="@+id/userm"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="Aayushi Gupta"
+                android:text="user"
                 android:textColor="@color/gen_white"
                 android:layout_gravity="center"
                 android:gravity="center"/>
             <TextView
+                android:id="@+id/usern"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="919910882990"
+                android:text="tel"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="@color/gen_white"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
                 <TextView
+                    android:id="@+id/usert"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:text="it.aygpt@gmail.com"
+                    android:layout_gravity="center"
+                    android:text="email"
                     android:textColor="@color/gen_white"/>
-            </RelativeLayout>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"

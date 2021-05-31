@@ -3,24 +3,44 @@ package com.mine.projet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.mine.projet.fragments.ImageListFragment;
+import com.mine.projet.models.Adresse;
+import com.mine.projet.models.Commande;
 import com.mine.projet.models.Produit;
+import com.mine.projet.models.User;
 import com.mine.projet.tinycart.Cart;
 import com.mine.projet.tinycart.TinyCartHelper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ProductActivity extends AppCompatActivity {
 
     int imagePosition;
     Produit stringImageUri;
+    public static final String MY_PREFS = "SharedPreferences";
+    public static ArrayList<Commande> mesComs=new ArrayList<>();
+    public static  ArrayList<Produit> allprods=new ArrayList<>();
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +52,10 @@ public class ProductActivity extends AppCompatActivity {
         TextView tvprodprix = (TextView)findViewById(R.id.tvprodprix);
         TextView tvproddetails = (TextView)findViewById(R.id.tvproddetails);
 
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("user", "");
+        user = gson.fromJson(json, User.class);
 
         if (getIntent() != null) {
             stringImageUri =(Produit) getIntent().getSerializableExtra(ImageListFragment.STRING_IMAGE_URI);
@@ -69,10 +93,12 @@ public class ProductActivity extends AppCompatActivity {
         textViewBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imgUtils imageUrlUtils = new imgUtils();
-                imageUrlUtils.addCartListProduit(stringImageUri);
-                Main2Activity.notificationCountCart++;
-
+                Commande comd=new Commande();
+                comd.userID=user.id;
+                comd.prodID=stringImageUri.id;
+                comd.adressID=ListAdresseActivity.adres.get(0).id;
+                comd.qte=1;
+                saveCom(comd);
                 // ajouter apres
                 /*NotificationCountSetClass.setNotifyCount(MainActivity.notificationCountCart);
                 startActivity(new Intent(ItemDetailsActivity.this, CartListActivity.class));*/
@@ -80,5 +106,41 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void saveCom(Commande comm) {
+        RequestQueue queue = Volley.newRequestQueue(ProductActivity.this);
+        StringRequest strreq = new StringRequest(Request.Method.POST,
+                "https://fptandroid.000webhostapp.com/order.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            // on below line we are passing our response
+                            // to json object to extract data from it.
+                            JSONArray json = new JSONArray(Response);
+                            System.out.println(json);
+                            mesComs=Commande.fromJson(json);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", String.valueOf(comm.userID));
+                params.put("qte", String.valueOf(comm.qte));
+                params.put("prodID", String.valueOf(comm.prodID));
+                params.put("adressID", String.valueOf(comm.adressID));
+                return params;
+            }
+        };
+        queue.add(strreq);
     }
 }
