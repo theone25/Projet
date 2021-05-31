@@ -62,6 +62,7 @@ public class IntroApp extends AppIntro {
                     imgUtils.getAllProduits(getApplicationContext());
                     login(user.email,user.password);
                     imgUtils.getfavs(user.id,IntroApp.this);
+                    imgUtils.getAdr(user.id,IntroApp.this);
                     loadingDialog.dismiss();
 
                 }

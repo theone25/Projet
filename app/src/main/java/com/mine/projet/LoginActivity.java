@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         prefsEditor.putString("user", json);
         prefsEditor.commit();
         imgUtils.getfavs(user.id,LoginActivity.this);
+        imgUtils.getAdr(user.id,LoginActivity.this);
     }
 
 

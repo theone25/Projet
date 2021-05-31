@@ -12,6 +12,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mine.projet.db.VolleyCallBack;
+import com.mine.projet.models.Adresse;
 import com.mine.projet.models.Produit;
 
 import org.json.JSONArray;
@@ -402,6 +403,39 @@ public class imgUtils {
             params.put("user", String.valueOf(id));
             return params;
         }
+        };
+        queue.add(strreq);
+    }
+    public static void getAdr(int id, Context ctx) {
+        RequestQueue queue = Volley.newRequestQueue(ctx);
+        StringRequest strreq = new StringRequest(Request.Method.POST,
+                "https://fptandroid.000webhostapp.com/listAdr.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        try {
+                            // on below line we are passing our response
+                            // to json object to extract data from it.
+                            JSONArray json = new JSONArray(Response);
+                            System.out.println("---------->"+json);
+                            ListAdresseActivity.adres=Adresse.fromJson(json);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+            }
+        }) {
+            @Override
+            public Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", String.valueOf(id));
+                return params;
+            }
         };
         queue.add(strreq);
     }
