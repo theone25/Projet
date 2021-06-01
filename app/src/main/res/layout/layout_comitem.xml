@@ -41,7 +41,7 @@
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Slim fit, cotton"
-                android:id="@+id/Qte"
+                android:id="@+id/qtep"
                 android:textSize="10dp"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

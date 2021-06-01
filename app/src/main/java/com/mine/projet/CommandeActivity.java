@@ -27,7 +27,6 @@ import static com.mine.projet.fragments.ImageListFragment.STRING_IMAGE_POSITION;
 import static com.mine.projet.fragments.ImageListFragment.STRING_IMAGE_URI;
 
 public class CommandeActivity extends AppCompatActivity {
-    Button orderbtn;
     RecyclerView recyclerVieworder;
     public static Context mContext;
 
@@ -36,8 +35,6 @@ public class CommandeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commande);
-        orderbtn=findViewById(R.id.macommandebtn);
-        recyclerVieworder=findViewById(R.id.recyclerviewcmd);
 
         mContext = CommandeActivity.this;
         ArrayList<Commande> coms = ProductActivity.mesComs;
@@ -46,15 +43,6 @@ public class CommandeActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(recylerViewLayoutManager);
         recyclerView.setAdapter(new CommandeActivity.SimpleStringRecyclerViewAdapter(recyclerView, coms));
-
-
-        orderbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in=new Intent(CommandeActivity.this, Main2Activity.class);
-                startActivity(in);
-            }
-        });
 
     }
 
@@ -81,7 +69,7 @@ public class CommandeActivity extends AppCompatActivity {
                 tvdetails=(TextView) mLayoutItem.findViewById(R.id.favdetails);
                 tvnom=(TextView) mLayoutItem.findViewById(R.id.favnom);
                 dateAchat=(TextView) mLayoutItem.findViewById(R.id.dateAchat);
-                Qte=(TextView) mLayoutItem.findViewById(R.id.Qte);
+                Qte=(TextView) mLayoutItem.findViewById(R.id.qtep);
             }
         }
 
@@ -106,7 +94,7 @@ public class CommandeActivity extends AppCompatActivity {
                     holder.tvprix.setText((Integer.parseInt(pp.prix)*mfavliste.get(position).qte)+" MAD");
                     holder.tvdetails.setText(pp.details);
                     holder.dateAchat.setText(mfavliste.get(position).dateAchat);
-                    holder.Qte.setText(mfavliste.get(position).qte);
+                    //holder.Qte.setText(mfavliste.get(position).qte);
                 }
             }
 

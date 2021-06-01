@@ -61,8 +61,7 @@ public class IntroApp extends AppIntro {
                     imgUtils.getProducts6(getApplicationContext());
                     imgUtils.getAllProduits(getApplicationContext());
                     login(user.email,user.password);
-                    imgUtils.getfavs(user.id,IntroApp.this);
-                    imgUtils.getAdr(user.id,IntroApp.this);
+
                     loadingDialog.dismiss();
 
                 }
@@ -172,6 +171,9 @@ public class IntroApp extends AppIntro {
                                 log.putExtra("last_name", last_name);
                                 log.putExtra("phone", phone);
                                 log.putExtra("email", email);
+                                imgUtils.getfavs(user.id,IntroApp.this);
+                                imgUtils.getAdr(user.id,IntroApp.this);
+                                imgUtils.getcoms(user.id,IntroApp.this);
                                 startActivity(log);
 
                             }

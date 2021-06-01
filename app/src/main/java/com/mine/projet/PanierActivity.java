@@ -250,7 +250,7 @@ public class PanierActivity extends AppCompatActivity {
         Cart cart = TinyCartHelper.getCart();
         RequestQueue queue = Volley.newRequestQueue(PanierActivity.this);
         StringRequest strreq = new StringRequest(Request.Method.POST,
-                "https://fptandroid.000webhostapp.com/order.php",
+                "https://fptandroid.000webhostapp.com/orders.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String Response) {
@@ -284,7 +284,6 @@ public class PanierActivity extends AppCompatActivity {
                 }
                 //send json array of commands
                 params.put("prods", String.valueOf(mycoms));
-                System.out.println(mycoms);
                 return params;
             }
         };

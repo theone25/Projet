@@ -40,7 +40,7 @@ public class FavorisActivity extends AppCompatActivity {
         favliste =imageUrlUtils.getWishlistProduit();
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         RecyclerView.LayoutManager recylerViewLayoutManager = new LinearLayoutManager(mContext);
-
+        setPanierLayout();
         recyclerView.setLayoutManager(recylerViewLayoutManager);
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(recyclerView, favliste));
     }
